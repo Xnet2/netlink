@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>נטלינק</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F5F6FB;
+    --surface:#FFFFFF;
+    --surface-2:#EEF0F8;
+    --text:#14161F;
+    --text-muted:#676B7E;
+    --border:#E4E7F1;
+    --accent:#5046E5;
+    --accent-2:#14C7A4;
+    --accent-soft:#EEF0FF;
+    --shadow:rgba(20,22,31,0.08);
+    --shadow-strong:rgba(80,70,229,0.18);
+    color-scheme:light;
+  }
+  html.dark{
+    --bg:#0F1119;
+    --surface:#1A1D29;
+    --surface-2:#232838;
+    --text:#F1F2F7;
+    --text-muted:#9297AC;
+    --border:#2B3040;
+    --accent:#8B85FF;
+    --accent-2:#2FE7C4;
+    --accent-soft:rgba(139,133,255,0.14);
+    --shadow:rgba(0,0,0,0.35);
+    --shadow-strong:rgba(139,133,255,0.25);
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Assistant',system-ui,sans-serif;
+    transition:background .25s ease, color .25s ease;
+    min-height:100vh;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .header-inner{
+    max-width:1180px;margin:0 auto;padding:14px 24px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+  }
+  .brand{display:flex;align-items:center;gap:10px;}
+  .brand-mark{width:30px;height:30px;flex-shrink:0;}
+  .brand-mark circle{fill:var(--accent);}
+  .brand-mark line{stroke:var(--accent-2);stroke-width:1.6;}
+  .brand-word{font-size:22px;font-weight:800;letter-spacing:-.01em;}
+  .brand-word span{
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .header-controls{display:flex;align-items:center;gap:10px;flex:1;max-width:480px;}
+  .search-wrap{position:relative;flex:1;}
+  .search-wrap input{
+    width:100%;padding:10px 42px 10px 16px;border-radius:12px;
+    border:1px solid var(--border);background:var(--surface);color:var(--text);
+    font-family:inherit;font-size:15px;outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .search-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft);}
+  .search-wrap svg{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;}
+  .theme-btn{
+    width:40px;height:40px;border-radius:12px;border:1px solid var(--border);
+    background:var(--surface);color:var(--text);display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:border-color .15s ease, transform .15s ease;flex-shrink:0;
+  }
+  .theme-btn:hover{border-color:var(--accent);transform:translateY(-1px);}
+  .theme-btn svg{width:19px;height:19px;}
+  .theme-btn .moon{display:none;}
+  html.dark .theme-btn .sun{display:none;}
+  html.dark .theme-btn .moon{display:block;}
+
+  /* ---------- Category chips ---------- */
+  .chip-nav-wrap{
+    position:sticky;top:64px;z-index:40;
+    background:color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .chip-nav{
+    max-width:1180px;margin:0 auto;padding:12px 24px;
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+  }
+  .chip-nav::-webkit-scrollbar{display:none;}
+  .chip{
+    flex-shrink:0;padding:8px 16px;border-radius:100px;font-size:14px;font-weight:600;
+    background:var(--surface-2);color:var(--text-muted);border:1px solid transparent;
+    cursor:pointer;transition:all .15s ease;white-space:nowrap;
+  }
+  .chip:hover{color:var(--text);}
+  .chip.active{
+    background:var(--accent);color:#fff;
+    box-shadow:0 4px 14px var(--shadow-strong);
+  }
+
+  /* ---------- Main ---------- */
+  main{max-width:1180px;margin:0 auto;padding:8px 24px 80px;}
+  .category-section{scroll-margin-top:130px;}
+  .category-heading{display:flex;align-items:center;gap:12px;margin:40px 0 18px;}
+  .category-heading .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2);flex-shrink:0;}
+  .category-heading h2{font-size:16px;font-weight:700;margin:0;white-space:nowrap;}
+  .category-heading .line{flex:1;height:1px;background:var(--border);}
+
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;
+  }
+  .card{
+    background:var(--surface);border:1px solid var(--border);border-radius:18px;
+    padding:16px;display:flex;flex-direction:column;gap:10px;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+    opacity:0;transform:translateY(10px);animation:riseIn .5s ease forwards;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    border-color:var(--accent);
+    box-shadow:0 12px 28px var(--shadow);
+  }
+  .card:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .card-top{display:flex;align-items:center;gap:12px;}
+  .card-logo{
+    width:44px;height:44px;border-radius:12px;object-fit:contain;
+    background:var(--surface-2);flex-shrink:0;border:1px solid var(--border);
+  }
+  .card-logo-fallback{
+    width:44px;height:44px;border-radius:12px;flex-shrink:0;
+    background:var(--accent-soft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:800;font-size:17px;
+  }
+  .card-name{font-size:15.5px;font-weight:700;line-height:1.3;}
+  .card-desc{
+    font-size:13px;color:var(--text-muted);line-height:1.5;margin:0;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+  }
+
+  @keyframes riseIn{to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- States ---------- */
+  .state-box{
+    text-align:center;padding:70px 20px;color:var(--text-muted);
+  }
+  .state-box h3{color:var(--text);font-size:18px;margin:0 0 8px;}
+  .state-box p{margin:0;font-size:14px;}
+  .retry-btn{
+    margin-top:16px;padding:9px 20px;border-radius:10px;border:1px solid var(--border);
+    background:var(--surface);color:var(--text);cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;
+  }
+  .retry-btn:hover{border-color:var(--accent);}
+
+  .skeleton-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px;margin-top:8px;}
+  .skeleton-card{
+    height:104px;border-radius:18px;background:linear-gradient(90deg,var(--surface-2) 25%,var(--surface) 50%,var(--surface-2) 75%);
+    background-size:200% 100%;animation:shimmer 1.4s infinite;border:1px solid var(--border);
+  }
+  @keyframes shimmer{0%{background-position:200% 0;}100%{background-position:-200% 0;}}
+
+  @media (prefers-reduced-motion:reduce){
+    .card{animation:none;opacity:1;transform:none;}
+    .skeleton-card{animation:none;}
+    *{transition:none !important;}
+  }
+
+  @media (max-width:640px){
+    .header-inner{flex-wrap:wrap;padding:12px 16px;}
+    .brand-word{font-size:19px;}
+    .header-controls{order:3;max-width:100%;width:100%;}
+    .chip-nav-wrap{top:104px;}
+    main{padding:8px 16px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 30 30" fill="none">
+        <line x1="8" y1="8" x2="22" y2="10"></line>
+        <line x1="8" y1="8" x2="12" y2="22"></line>
+        <line x1="22" y1="10" x2="12" y2="22"></line>
+        <circle cx="8" cy="8" r="3.4"></circle>
+        <circle cx="22" cy="10" r="3.4"></circle>
+        <circle cx="12" cy="22" r="3.4"></circle>
+      </svg>
+      <div class="brand-word">נט<span>לינק</span></div>
+    </div>
+    <div class="header-controls">
+      <div class="search-wrap">
+        <input id="searchInput" type="text" placeholder="חיפוש אתר...">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <button class="theme-btn" id="themeBtn" aria-label="החלף מצב תצוגה">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"></path></svg>
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+      </button>
+    </div>
+  </div>
+  <div class="chip-nav-wrap">
+    <nav class="chip-nav" id="chipNav"></nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="skeleton-grid" id="skeleton">
+    <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+    <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+  </div>
+</main>
+
+<script>
+  // ===== קישור ה-CSV של הגיליון (טור: קישור, שם האתר, תיאור, לוגו, קטגוריה) =====
+  const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqW9PU8W3ao33tsiYdwLCKxoENM1zJJsR4LfNrZp1gjLuuuUDH6m13XiVev9LDg8XkpgBwL_ITPkc-/pub?gid=0&single=true&output=csv";
+
+  const mainEl = document.getElementById('main');
+  const chipNav = document.getElementById('chipNav');
+
+  // ---------- Theme ----------
+  const themeBtn = document.getElementById('themeBtn');
+  let isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  applyTheme();
+  themeBtn.addEventListener('click', () => { isDark = !isDark; applyTheme(); });
+  function applyTheme(){ document.documentElement.classList.toggle('dark', isDark); }
+
+  // ---------- CSV Parser ----------
+  function parseCSV(text){
+    const rows = [];
+    let row = [], field = '', inQuotes = false;
+    for(let i=0;i<text.length;i++){
+      const c = text[i], next = text[i+1];
+      if(inQuotes){
+        if(c === '"' && next === '"'){ field += '"'; i++; }
+        else if(c === '"'){ inQuotes = false; }
+        else { field += c; }
+      } else {
+        if(c === '"'){ inQuotes = true; }
+        else if(c === ','){ row.push(field); field=''; }
+        else if(c === '\r'){ /* skip */ }
+        else if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=''; }
+        else { field += c; }
+      }
+    }
+    if(field.length || row.length){ row.push(field); rows.push(row); }
+    if(!rows.length) return [];
+    const headers = rows[0].map(h => h.trim());
+    return rows.slice(1)
+      .filter(r => r.some(v => v.trim() !== ''))
+      .map(r => {
+        const obj = {};
+        headers.forEach((h,i) => obj[h] = (r[i] || '').trim());
+        return obj;
+      });
+  }
+
+  function norm(obj, keys){
+    for(const k of keys){ if(obj[k]) return obj[k]; }
+    return '';
+  }
+
+  // ---------- Fetch & Render ----------
+  let allSites = [];
+
+  async function load(){
+    try{
+      const res = await fetch(SHEET_CSV_URL);
+      if(!res.ok) throw new Error('bad status');
+      const text = await res.text();
+      const rows = parseCSV(text);
+      allSites = rows.map(r => ({
+        url: norm(r, ['קישור','URL','קישור לאתר']),
+        name: norm(r, ['שם האתר','שם']),
+        desc: norm(r, ['תיאור']),
+        logo: norm(r, ['לוגו','קישור ללוגו']),
+        category: norm(r, ['קטגוריה']) || 'כללי'
+      })).filter(s => s.url && s.name);
+      render(allSites);
+    }catch(err){
+      renderError();
+    }
+  }
+
+  function renderError(){
+    mainEl.innerHTML = `
+      <div class="state-box">
+        <h3>לא הצלחנו לטעון את רשימת האתרים</h3>
+        <p>ודאו שהגיליון עדיין מפורסם לאינטרנט, ונסו שוב.</p>
+        <button class="retry-btn" onclick="load()">נסה שוב</button>
+      </div>`;
+    chipNav.innerHTML = '';
+  }
+
+  function render(sites){
+    if(!sites.length){
+      mainEl.innerHTML = `
+        <div class="state-box">
+          <h3>עדיין לא נוספו אתרים</h3>
+          <p>הוסיפו שורה בגיליון עם קישור, שם, תיאור, לוגו וקטגוריה — והדף יתעדכן.</p>
+        </div>`;
+      chipNav.innerHTML = '';
+      return;
+    }
+
+    const categories = [...new Set(sites.map(s => s.category))].sort((a,b) => a.localeCompare(b,'he'));
+
+    chipNav.innerHTML = `<button class="chip active" data-cat="all">הכל</button>` +
+      categories.map(c => `<button class="chip" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
+
+    mainEl.innerHTML = categories.map(cat => {
+      const catSites = sites.filter(s => s.category === cat);
+      return `
+        <section class="category-section" id="cat-${slug(cat)}">
+          <div class="category-heading"><span class="dot"></span><h2>${escapeHtml(cat)}</h2><span class="line"></span></div>
+          <div class="grid">
+            ${catSites.map(cardHtml).join('')}
+          </div>
+        </section>`;
+    }).join('');
+
+    // Chip click -> scroll
+    chipNav.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        const cat = chip.dataset.cat;
+        chipNav.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+        if(cat === 'all'){ window.scrollTo({top:0, behavior:'smooth'}); return; }
+        const target = document.getElementById('cat-' + slug(cat));
+        if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+      });
+    });
+
+    setupScrollSpy(categories);
+  }
+
+  function cardHtml(s){
+    const initials = escapeHtml((s.name || '?').trim().charAt(0));
+    return `
+      <a class="card" href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer">
+        <div class="card-top">
+          ${s.logo
+            ? `<img class="card-logo" src="${escapeAttr(s.logo)}" alt="" loading="lazy"
+                 onerror="this.outerHTML='<div class=&quot;card-logo-fallback&quot;>${initials}</div>'">`
+            : `<div class="card-logo-fallback">${initials}</div>`}
+          <div class="card-name">${escapeHtml(s.name)}</div>
+        </div>
+        ${s.desc ? `<p class="card-desc">${escapeHtml(s.desc)}</p>` : ''}
+      </a>`;
+  }
+
+  function setupScrollSpy(categories){
+    const sections = categories.map(c => document.getElementById('cat-' + slug(c))).filter(Boolean);
+    if(!('IntersectionObserver' in window) || !sections.length) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          const id = entry.target.id;
+          chipNav.querySelectorAll('.chip').forEach(c => {
+            c.classList.toggle('active', 'cat-' + slug(c.dataset.cat) === id);
+          });
+        }
+      });
+    }, { rootMargin: '-140px 0px -70% 0px' });
+    sections.forEach(s => observer.observe(s));
+  }
+
+  // ---------- Search ----------
+  document.getElementById('searchInput').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    if(!q){ render(allSites); return; }
+    const filtered = allSites.filter(s =>
+      s.name.toLowerCase().includes(q) || (s.desc && s.desc.toLowerCase().includes(q))
+    );
+    render(filtered);
+  });
+
+  function slug(str){ return str.replace(/[^\p{L}\p{N}]+/gu, '-'); }
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  }
+  function escapeAttr(str){ return escapeHtml(str); }
+
+  load();
+</script>
+</body>
+</html>
