@@ -61,9 +61,13 @@
     display:flex;align-items:center;justify-content:space-between;gap:20px;
   }
   .brand{display:flex;align-items:center;gap:10px;}
-  .brand-mark{width:30px;height:30px;flex-shrink:0;}
-  .brand-mark circle{fill:var(--accent);}
-  .brand-mark line{stroke:var(--accent-2);stroke-width:1.6;}
+  .brand-badge{
+    width:34px;height:34px;border-radius:11px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 14px var(--shadow-strong);
+  }
+  .brand-badge svg{width:18px;height:18px;color:#fff;}
   .brand-word{font-size:22px;font-weight:800;letter-spacing:-.01em;}
   .brand-word span{
     background:linear-gradient(90deg,var(--accent),var(--accent-2));
@@ -166,11 +170,31 @@
     backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     border-bottom:1px solid var(--border);
   }
+  .chip-nav-scroller{
+    max-width:1180px;margin:0 auto;position:relative;display:flex;align-items:center;
+  }
   .chip-nav{
-    max-width:1180px;margin:0 auto;padding:12px 24px;
-    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
+    padding:12px 24px;
+    display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;scroll-behavior:smooth;flex:1;
   }
   .chip-nav::-webkit-scrollbar{display:none;}
+  .chip-arrow{
+    position:absolute;top:0;bottom:0;z-index:5;width:38px;flex-shrink:0;
+    display:none;align-items:center;justify-content:center;border:none;cursor:pointer;
+    color:var(--text-muted);
+  }
+  .chip-arrow.show{display:flex;}
+  .chip-arrow:disabled{opacity:0;pointer-events:none;}
+  .chip-arrow svg{width:18px;height:18px;}
+  .chip-arrow:hover{color:var(--accent);}
+  .chip-arrow-start{
+    inset-inline-start:0;
+    background:linear-gradient(to left, transparent, var(--bg) 55%);
+  }
+  .chip-arrow-end{
+    inset-inline-end:0;
+    background:linear-gradient(to right, transparent, var(--bg) 55%);
+  }
   .chip{
     flex-shrink:0;padding:8px 16px;border-radius:100px;font-size:14px;font-weight:600;
     background:var(--surface-2);color:var(--text-muted);border:1px solid transparent;
@@ -186,7 +210,7 @@
   main{max-width:1180px;margin:0 auto;padding:8px 24px 80px;}
   .category-section{scroll-margin-top:130px;}
   .category-heading{display:flex;align-items:center;gap:12px;margin:40px 0 18px;}
-  .category-heading .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2);flex-shrink:0;}
+  .category-heading .dot{width:9px;height:9px;border-radius:50%;background:var(--accent-2);flex-shrink:0;}
   .category-heading h2{font-size:16px;font-weight:700;margin:0;white-space:nowrap;}
   .category-heading .line{flex:1;height:1px;background:var(--border);}
 
@@ -265,14 +289,13 @@
 <header>
   <div class="header-inner">
     <div class="brand">
-      <svg class="brand-mark" viewBox="0 0 30 30" fill="none">
-        <line x1="8" y1="8" x2="22" y2="10"></line>
-        <line x1="8" y1="8" x2="12" y2="22"></line>
-        <line x1="22" y1="10" x2="12" y2="22"></line>
-        <circle cx="8" cy="8" r="3.4"></circle>
-        <circle cx="22" cy="10" r="3.4"></circle>
-        <circle cx="12" cy="22" r="3.4"></circle>
-      </svg>
+      <div class="brand-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 7h3a5 5 0 0 1 0 10h-3"/>
+          <path d="M9 17H6a5 5 0 0 1 0-10h3"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+      </div>
       <div class="brand-word">נט<span>לינק</span></div>
     </div>
     <div class="header-controls">
@@ -293,7 +316,15 @@
     </div>
   </div>
   <div class="chip-nav-wrap">
-    <nav class="chip-nav" id="chipNav"></nav>
+    <div class="chip-nav-scroller">
+      <button class="chip-arrow chip-arrow-start" id="chipArrowStart" aria-label="גלול לצד ההתחלה">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </button>
+      <nav class="chip-nav" id="chipNav"></nav>
+      <button class="chip-arrow chip-arrow-end" id="chipArrowEnd" aria-label="גלול לצד הסוף">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -310,7 +341,7 @@
     <form id="suggestForm">
       <div class="field">
         <label for="s-name">שם האתר <span class="req">*</span></label>
-        <input id="s-name" type="text" required placeholder="לדוגמה: כל רגע">
+        <input id="s-name" type="text" required placeholder="לדוגמה: וואלה">
       </div>
       <div class="field">
         <label for="s-url">קישור לאתר <span class="req">*</span></label>
@@ -355,6 +386,65 @@
 
   const mainEl = document.getElementById('main');
   const chipNav = document.getElementById('chipNav');
+  const chipArrowStart = document.getElementById('chipArrowStart');
+  const chipArrowEnd = document.getElementById('chipArrowEnd');
+
+  // ---------- Chip nav horizontal scroll (RTL-safe) ----------
+  function detectRtlScrollType(){
+    const el = document.createElement('div');
+    el.dir = 'rtl';
+    el.style.cssText = 'position:absolute;top:-9999px;width:4px;height:1px;overflow:scroll;font-size:14px;';
+    const inner = document.createElement('div');
+    inner.style.width = '8px';
+    el.appendChild(inner);
+    document.body.appendChild(el);
+    let type = 'default';
+    if(el.scrollLeft > 0){
+      type = 'default';
+    } else {
+      el.scrollLeft = 1;
+      type = (el.scrollLeft === 0) ? 'negative' : 'reverse';
+    }
+    el.remove();
+    return type;
+  }
+  const rtlScrollType = detectRtlScrollType();
+
+  function scrollFraction(){
+    const max = chipNav.scrollWidth - chipNav.clientWidth;
+    if(max <= 0) return 0;
+    const sl = chipNav.scrollLeft;
+    if(rtlScrollType === 'negative') return (-sl) / max;
+    if(rtlScrollType === 'reverse') return (max - sl) / max;
+    return sl / max;
+  }
+  function scrollChips(forward){
+    const amount = 240;
+    const delta = (rtlScrollType === 'default') ? amount : -amount;
+    chipNav.scrollBy({ left: forward ? delta : -delta, behavior: 'smooth' });
+  }
+  function updateChipArrows(){
+    const max = chipNav.scrollWidth - chipNav.clientWidth;
+    const overflow = max > 4;
+    chipArrowStart.classList.toggle('show', overflow);
+    chipArrowEnd.classList.toggle('show', overflow);
+    if(!overflow) return;
+    const frac = scrollFraction();
+    chipArrowStart.disabled = frac <= 0.02;
+    chipArrowEnd.disabled = frac >= 0.98;
+  }
+  chipArrowStart.addEventListener('click', () => scrollChips(false));
+  chipArrowEnd.addEventListener('click', () => scrollChips(true));
+  chipNav.addEventListener('scroll', updateChipArrows, { passive: true });
+  window.addEventListener('resize', updateChipArrows);
+
+  // ---------- Category colors ----------
+  const CATEGORY_PALETTE = ['#5046E5','#14C7A4','#F59E0B','#EF4444','#EC4899','#8B5CF6','#06B6D4','#84CC16','#F97316','#3B82F6','#D946EF','#10B981'];
+  function categoryColor(name){
+    let hash = 0;
+    for(let i=0;i<name.length;i++){ hash = (hash * 31 + name.charCodeAt(i)) >>> 0; }
+    return CATEGORY_PALETTE[hash % CATEGORY_PALETTE.length];
+  }
 
   // ---------- Theme ----------
   const themeBtn = document.getElementById('themeBtn');
@@ -428,6 +518,8 @@
         <button class="retry-btn" onclick="load()">נסה שוב</button>
       </div>`;
     chipNav.innerHTML = '';
+    chipArrowStart.classList.remove('show');
+    chipArrowEnd.classList.remove('show');
   }
 
   function render(sites){
@@ -438,6 +530,8 @@
           <p>הוסיפו שורה בגיליון עם קישור, שם, תיאור, לוגו וקטגוריה — והדף יתעדכן.</p>
         </div>`;
       chipNav.innerHTML = '';
+      chipArrowStart.classList.remove('show');
+      chipArrowEnd.classList.remove('show');
       return;
     }
 
@@ -450,7 +544,7 @@
       const catSites = sites.filter(s => s.category === cat);
       return `
         <section class="category-section" id="cat-${slug(cat)}">
-          <div class="category-heading"><span class="dot"></span><h2>${escapeHtml(cat)}</h2><span class="line"></span></div>
+          <div class="category-heading"><span class="dot" style="background:${categoryColor(cat)}"></span><h2>${escapeHtml(cat)}</h2><span class="line"></span></div>
           <div class="grid">
             ${catSites.map(cardHtml).join('')}
           </div>
@@ -470,6 +564,7 @@
     });
 
     setupScrollSpy(categories);
+    updateChipArrows();
   }
 
   function cardHtml(s){
@@ -573,4 +668,3 @@
 </script>
 </body>
 </html>
-
