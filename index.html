@@ -3,721 +3,1288 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>נטלינק | אינדקס אתרים</title>
+<title>הקלטות ימות המשיח</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    /* צבעים בהירים - מודרניים ורכים */
-    --bg: #F8F9FA;
-    --surface: #FFFFFF;
-    --surface-2: #F1F3F5;
-    --text: #1F2937;
-    --text-muted: #6B7280;
-    --border: #E5E7EB;
-    --accent: #4F46E5;
-    --accent-2: #7C3AED;
-    --accent-soft: #EEF2FF;
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
-    --shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
-    --shadow-hover: 0 20px 40px -10px rgba(79, 70, 229, 0.15);
-    --shadow-strong: rgba(79, 70, 229, 0.25);
-    --radius-sm: 12px;
-    --radius-md: 16px;
-    --radius-lg: 24px;
-    color-scheme: light;
+  :root{
+    --bg:#F4F5F7;
+    --surface:#FFFFFF;
+    --border:#E4E6EB;
+    --text:#161A22;
+    --text-dim:#6B7280;
+    --text-faint:#9CA3AF;
+    --accent:#4F46E5;
+    --danger:#DC2626;
+    --header:#12141C;
+    --radius:12px;
   }
-  
-  html.dark {
-    /* צבעים כהים - עמוקים ואלגנטיים */
-    --bg: #0B0F19;
-    --surface: #111827;
-    --surface-2: #1F2937;
-    --text: #F9FAFB;
-    --text-muted: #9CA3AF;
-    --border: #374151;
-    --accent: #6366F1;
-    --accent-2: #8B5CF6;
-    --accent-soft: rgba(99, 102, 241, 0.15);
-    --shadow-sm: 0 2px 4px rgba(0,0,0,0.2);
-    --shadow: 0 10px 25px -5px rgba(0,0,0,0.3);
-    --shadow-hover: 0 20px 40px -10px rgba(99, 102, 241, 0.2);
-    --shadow-strong: rgba(99, 102, 241, 0.4);
-    color-scheme: dark;
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    font-family:'Heebo',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    display:flex;
+    justify-content:center;
+    -webkit-font-smoothing:antialiased;
   }
-  
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Assistant', system-ui, sans-serif;
-    transition: background 0.3s ease, color 0.3s ease;
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
+  #app{
+    width:100%;
+    max-width:640px;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    background:var(--bg);
+    box-shadow:0 0 40px rgba(0,0,0,.06);
   }
-  a { color: inherit; text-decoration: none; }
-  button { font-family: inherit; }
+  button{font-family:inherit;}
+  button:focus-visible, input:focus-visible, .waveform:focus-visible{
+    outline:2px solid var(--accent);outline-offset:2px;
+  }
+  svg{display:block;}
 
-  /* ---------- Header ---------- */
-  header {
-    position: sticky; top: 0; z-index: 50;
-    background: color-mix(in srgb, var(--surface) 80%, transparent);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
+  header{
+    background:var(--header);
+    color:#fff;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-shrink:0;
   }
-  .header-inner {
-    max-width: 1200px; margin: 0 auto; padding: 16px 24px;
-    display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  header .title{display:flex;flex-direction:column;gap:2px;}
+  header .title b{font-size:1.02rem;font-weight:600;letter-spacing:.01em;}
+  header .title span{font-size:.76rem;color:#9CA3AF;font-weight:400;}
+  header .actions{display:flex;gap:6px;}
+  header button.icon{
+    width:36px;height:36px;
+    background:rgba(255,255,255,.06);border:none;color:#fff;cursor:pointer;
+    border-radius:8px;display:flex;align-items:center;justify-content:center;
+    transition:background .15s;
   }
-  .brand { display: flex; align-items: center; gap: 12px; }
-  .brand-badge {
-    width: 38px; height: 38px; border-radius: var(--radius-sm); flex-shrink: 0;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    display: flex; align-items: center; justify-content: center;
-    box-shadow: 0 6px 16px var(--shadow-strong);
-  }
-  .brand-badge svg { width: 20px; height: 20px; color: #fff; }
-  .brand-word { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
-  .brand-word span {
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text; background-clip: text; color: transparent;
-  }
-  
-  .header-controls { display: flex; align-items: center; gap: 12px; flex: 1; max-width: 540px; }
-  .search-wrap { position: relative; flex: 1; }
-  .search-wrap input {
-    width: 100%; padding: 12px 46px 12px 20px; border-radius: 100px;
-    border: 1px solid var(--border); background: var(--surface-2); color: var(--text);
-    font-size: 15px; font-weight: 500; outline: none;
-    transition: all 0.2s ease;
-  }
-  .search-wrap input:focus {
-    background: var(--surface);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 4px var(--accent-soft);
-  }
-  .search-wrap input::placeholder { color: var(--text-muted); }
-  .search-wrap svg {
-    position: absolute; right: 18px; top: 50%; transform: translateY(-50%);
-    color: var(--text-muted); pointer-events: none;
-    transition: color 0.2s ease;
-  }
-  .search-wrap input:focus + svg { color: var(--accent); }
-  
-  .theme-btn {
-    width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--border);
-    background: var(--surface); color: var(--text); 
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer; transition: all 0.2s ease; flex-shrink: 0;
-  }
-  .theme-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-  .theme-btn svg { width: 20px; height: 20px; }
-  .theme-btn .moon { display: none; }
-  html.dark .theme-btn .sun { display: none; }
-  html.dark .theme-btn .moon { display: block; }
+  header button.icon:hover{background:rgba(255,255,255,.14);}
+  header button.icon svg{width:17px;height:17px;}
 
-  .suggest-btn {
-    display: flex; align-items: center; gap: 8px; flex-shrink: 0;
-    padding: 0 20px; height: 44px; border-radius: 100px; border: none;
-    background: var(--surface); color: var(--text); cursor: pointer; font-size: 15px; font-weight: 700;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid var(--border);
-    transition: all 0.2s ease;
+  #list{
+    flex:1;
+    overflow-y:auto;
+    padding:18px 16px 10px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
   }
-  html.dark .suggest-btn { box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-  .suggest-btn:hover { 
-    border-color: var(--accent); color: var(--accent); 
-    transform: translateY(-2px); box-shadow: 0 6px 16px var(--shadow-strong);
+  .rec-item{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:var(--radius);
+    padding:12px 14px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:box-shadow .15s, border-color .15s;
   }
-  .suggest-btn span { white-space: nowrap; }
+  .rec-item:hover{box-shadow:0 2px 10px rgba(0,0,0,.05);}
+  .rec-item.pending{border-inline-start:3px solid var(--accent);}
+  .rec-item.error-item{border-color:#F3C6C6;background:#FFF8F8;}
 
-  /* ---------- Category chips ---------- */
-  .chip-nav-wrap {
-    position: sticky; top: 71px; z-index: 40;
-    background: color-mix(in srgb, var(--bg) 90%, transparent);
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
+  .play-btn{
+    width:38px;height:38px;flex-shrink:0;border-radius:50%;
+    background:var(--accent);border:none;color:#fff;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .1s, background .15s;
   }
-  .chip-nav-scroller {
-    max-width: 1200px; margin: 0 auto; position: relative; display: flex; align-items: center;
-  }
-  .chip-nav {
-    padding: 16px 24px; display: flex; gap: 10px; overflow-x: auto; 
-    scrollbar-width: none; scroll-behavior: smooth; flex: 1;
-  }
-  .chip-nav::-webkit-scrollbar { display: none; }
-  .chip-arrow {
-    position: absolute; top: 0; bottom: 0; z-index: 5; width: 44px; flex-shrink: 0;
-    display: none; align-items: center; justify-content: center; border: none; cursor: pointer;
-    color: var(--text-muted); transition: color 0.2s ease;
-  }
-  .chip-arrow.show { display: flex; }
-  .chip-arrow:disabled { opacity: 0; pointer-events: none; }
-  .chip-arrow svg { width: 20px; height: 20px; }
-  .chip-arrow:hover { color: var(--accent); }
-  .chip-arrow-start { inset-inline-start: 0; background: linear-gradient(to left, transparent, var(--bg) 60%); }
-  .chip-arrow-end { inset-inline-end: 0; background: linear-gradient(to right, transparent, var(--bg) 60%); }
-  
-  .chip {
-    flex-shrink: 0; padding: 8px 20px; border-radius: 100px; font-size: 14.5px; font-weight: 600;
-    background: var(--surface); color: var(--text-muted); border: 1px solid var(--border);
-    cursor: pointer; transition: all 0.2s ease; white-space: nowrap;
-  }
-  .chip:hover { color: var(--text); border-color: var(--text-muted); }
-  .chip.active {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff; border-color: transparent;
-    box-shadow: 0 4px 12px var(--shadow-strong);
-  }
+  .play-btn:hover{background:#433CD1;}
+  .play-btn:active{transform:scale(.94);}
+  .play-btn svg{width:15px;height:15px;}
 
-  /* ---------- Main ---------- */
-  main { max-width: 1200px; margin: 0 auto; padding: 12px 24px 80px; }
-  .category-section { scroll-margin-top: 150px; }
-  .category-heading { display: flex; align-items: center; gap: 14px; margin: 48px 0 24px; }
-  .category-heading .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent-2); flex-shrink: 0; box-shadow: 0 0 8px currentColor; }
-  .category-heading h2 { font-size: 20px; font-weight: 800; margin: 0; white-space: nowrap; color: var(--text); }
-  .category-heading .line { flex: 1; height: 1px; background: linear-gradient(to left, var(--border), transparent); }
+  .rec-info{flex:1;min-width:0;}
+  .rec-top{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:7px;}
+  .rec-name{font-weight:600;font-size:.9rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rec-meta{font-size:.72rem;color:var(--text-faint);flex-shrink:0;white-space:nowrap;}
 
-  .grid {
-    display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;
+  .rec-wave-row{display:flex;align-items:center;gap:10px;}
+  .waveform{
+    flex:1;height:28px;display:flex;align-items:center;gap:2px;cursor:pointer;
   }
-  .card {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md);
-    padding: 20px; display: flex; flex-direction: column; gap: 14px;
-    box-shadow: var(--shadow);
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
-    opacity: 0; transform: translateY(15px); animation: riseIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  .wf-bar{
+    width:3px;min-width:3px;border-radius:2px;background:#DDE0E6;flex-shrink:0;
   }
-  .card:hover {
-    transform: translateY(-6px) scale(1.02);
-    border-color: var(--accent);
-    box-shadow: var(--shadow-hover);
-  }
-  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-  
-  .card-top { display: flex; align-items: center; gap: 14px; }
-  .card-logo {
-    width: 48px; height: 48px; border-radius: var(--radius-sm); object-fit: contain;
-    background: #fff; flex-shrink: 0; border: 1px solid var(--border); padding: 2px;
-  }
-  html.dark .card-logo { background: var(--surface-2); }
-  .card-logo-fallback {
-    width: 48px; height: 48px; border-radius: var(--radius-sm); flex-shrink: 0;
-    background: linear-gradient(135deg, var(--accent-soft), var(--surface-2)); 
-    color: var(--accent); display: flex; align-items: center; justify-content: center;
-    font-weight: 800; font-size: 20px; border: 1px solid var(--border);
-  }
-  .card-name { font-size: 17px; font-weight: 700; line-height: 1.3; color: var(--text); }
-  .card-desc {
-    font-size: 14px; color: var(--text-muted); line-height: 1.6; margin: 0;
-    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  }
+  .wf-bar.played{background:var(--accent);}
+  .rec-time{font-size:.7rem;color:var(--text-faint);flex-shrink:0;min-width:32px;text-align:left;}
 
-  @keyframes riseIn { to { opacity: 1; transform: translateY(0); } }
+  .delete-btn{
+    width:32px;height:32px;flex-shrink:0;border-radius:8px;border:none;background:none;
+    color:var(--text-faint);cursor:pointer;display:flex;align-items:center;justify-content:center;
+    transition:background .15s,color .15s;
+  }
+  .delete-btn:hover{background:#FDEDEC;color:var(--danger);}
+  .delete-btn svg{width:16px;height:16px;}
 
-  /* ---------- Modal ---------- */
-  .modal-overlay {
-    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(6px);
-    display: none; align-items: center; justify-content: center; z-index: 100; padding: 20px;
-    opacity: 0; transition: opacity 0.3s ease;
-  }
-  .modal-overlay.open { display: flex; opacity: 1; }
-  .modal {
-    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
-    padding: 32px; width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto;
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.4);
-    transform: scale(0.95) translateY(20px); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
-  
-  .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-  .modal-header h2 { font-size: 22px; font-weight: 800; margin: 0; color: var(--text); }
-  .modal-close {
-    width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--surface-2);
-    color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s ease;
-  }
-  .modal-close:hover { background: #FEE2E2; color: #EF4444; transform: rotate(90deg); }
-  html.dark .modal-close:hover { background: rgba(239, 68, 68, 0.2); }
-  .modal-lead { font-size: 14.5px; color: var(--text-muted); margin: 0 0 24px; line-height: 1.5; }
+  .status-text{font-size:.82rem;color:var(--text-dim);}
+  .status-text.error{color:var(--danger);}
 
-  .field { margin-bottom: 18px; }
-  .field label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
-  .field .req { color: #EF4444; }
-  .field .hint { font-size: 12.5px; color: var(--text-muted); font-weight: 400; margin-right: 4px; }
-  .field input, .field textarea {
-    width: 100%; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid var(--border);
-    background: var(--bg); color: var(--text); font-family: inherit; font-size: 15px; outline: none;
-    transition: all 0.2s ease;
+  .empty-state, .status-line{
+    text-align:center;color:var(--text-dim);font-size:.9rem;
+    padding:40px 16px;line-height:1.6;white-space:pre-line;
   }
-  .field input:focus, .field textarea:focus {
-    border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); background: var(--surface);
-  }
-  .field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
-  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-  @media (max-width: 480px) { .row2 { grid-template-columns: 1fr; gap: 0; } }
+  .status-line.error{color:var(--danger);}
 
-  .submit-btn {
-    width: 100%; padding: 14px; border-radius: var(--radius-sm); border: none;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: #fff; font-weight: 700; font-size: 16px; cursor: pointer; margin-top: 12px;
-    display: flex; align-items: center; justify-content: center; gap: 10px;
-    box-shadow: 0 4px 14px var(--shadow-strong);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  #bottombar{
+    flex-shrink:0;
+    background:var(--surface);
+    padding:12px 16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border-top:1px solid var(--border);
   }
-  .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--shadow-strong); }
-  .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; box-shadow: none; }
-  .submit-btn .spinner {
-    width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,0.3); border-top-color: #fff;
-    animation: spin 0.8s linear infinite; display: none;
+  #bottombar button.attach{
+    width:38px;height:38px;border-radius:8px;border:none;background:none;color:var(--text-dim);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    transition:background .15s,color .15s;
   }
-  .submit-btn.loading .spinner { display: inline-block; }
-  .submit-btn.loading .btn-text { display: none; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+  #bottombar button.attach:hover{background:var(--bg);color:var(--text);}
+  #bottombar button.attach svg{width:19px;height:19px;}
 
-  .banner {
-    margin-top: 16px; padding: 12px 16px; border-radius: var(--radius-sm); font-size: 14.5px; font-weight: 600;
-    display: none; align-items: center; gap: 10px; animation: modalIn 0.3s ease;
+  #recTimer{
+    flex:1;
+    font-size:.86rem;
+    color:var(--text-dim);
+    display:none;
+    align-items:center;
+    gap:8px;
   }
-  .banner.success { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #059669; }
-  html.dark .banner.success { color: #34D399; }
-  .banner.error { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #DC2626; }
-  html.dark .banner.error { color: #F87171; }
+  #recTimer .dot{width:8px;height:8px;border-radius:50%;background:var(--danger);animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.25;}}
+  #placeholderText{flex:1;color:var(--text-faint);font-size:.86rem;}
 
-  /* ---------- States ---------- */
-  .state-box { text-align: center; padding: 100px 20px; color: var(--text-muted); }
-  .state-box h3 { color: var(--text); font-size: 22px; font-weight: 800; margin: 0 0 12px; }
-  .state-box p { margin: 0; font-size: 16px; line-height: 1.5; }
-  .retry-btn {
-    margin-top: 24px; padding: 12px 28px; border-radius: 100px; border: none;
-    background: var(--text); color: var(--bg); cursor: pointer; font-size: 15px; font-weight: 700;
-    transition: transform 0.2s ease;
+  #micBtn{
+    width:44px;height:44px;border-radius:50%;border:none;
+    background:var(--header);color:#fff;
+    cursor:pointer;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    transition:transform .12s, background .15s;
   }
-  .retry-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  #micBtn svg{width:17px;height:17px;}
+  #micBtn.recording{background:var(--danger);}
+  #micBtn:active{transform:scale(.92);}
 
-  .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; margin-top: 16px; }
-  .skeleton-card {
-    height: 120px; border-radius: var(--radius-md); 
-    background: linear-gradient(90deg, var(--surface-2) 25%, var(--border) 50%, var(--surface-2) 75%);
-    background-size: 200% 100%; animation: shimmer 1.5s infinite; border: 1px solid var(--border);
+  .ov{
+    position:fixed;inset:0;background:rgba(15,17,25,.55);
+    display:none;align-items:center;justify-content:center;z-index:50;
+    padding:16px;
   }
-  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .ov.open{display:flex;}
+  .ov-box{
+    background:#fff;border-radius:16px;padding:24px;width:100%;max-width:420px;
+    max-height:90vh;overflow-y:auto;
+  }
+  .ov-box h2{margin:0 0 4px;font-size:1.08rem;font-weight:700;}
+  .ov-box .sub{font-size:.8rem;color:var(--text-dim);margin-bottom:16px;}
+  .ov-box label{display:block;font-size:.8rem;font-weight:600;margin:14px 0 5px;}
+  .ov-box input[type="text"]{
+    width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:.92rem;
+    font-family:inherit;background:#FAFAFB;
+  }
+  .ov-box input[type="text"]:focus{border-color:var(--accent);background:#fff;}
+  .ov-box .hint{font-size:.73rem;color:var(--text-faint);margin-top:5px;line-height:1.5;}
+  .ov-box .warn{
+    display:flex;gap:8px;
+    background:#FFF8EC;border:1px solid #F5DFAE;border-radius:8px;
+    padding:10px 12px;font-size:.74rem;color:#8A6100;margin-top:16px;line-height:1.55;
+  }
+  .ov-box .warn svg{width:15px;height:15px;flex-shrink:0;margin-top:2px;color:#B8860B;}
+  .ov-box .btnrow{display:flex;gap:10px;margin-top:20px;}
+  .ov-box .btnrow button{
+    flex:1;padding:11px;border-radius:8px;border:none;font-size:.9rem;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  .ov-box .btnrow button.primary{background:var(--header);color:#fff;}
+  .ov-box .btnrow button.primary:hover{background:#000;}
+  .ov-box .btnrow button.secondary{background:var(--bg);color:var(--text);}
+  .ov-box .btnrow button.secondary:hover{background:var(--border);}
+  .ov-box .btnrow button.danger-text{color:var(--danger);}
 
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; transform: none !important; }
-    .card { opacity: 1; }
+  #contactsList{display:flex;flex-direction:column;gap:6px;margin-top:6px;max-height:50vh;overflow-y:auto;}
+  .contact-row{
+    display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;cursor:pointer;
+    border:1px solid var(--border);background:#FAFAFB;transition:background .15s;
   }
+  .contact-row:hover{background:var(--bg);}
+  .contact-row .c-avatar{
+    width:38px;height:38px;border-radius:50%;flex-shrink:0;overflow:hidden;
+    background:var(--border);color:var(--text-faint);display:flex;align-items:center;justify-content:center;
+  }
+  .contact-row .c-avatar img{width:100%;height:100%;object-fit:cover;}
+  .contact-row .c-avatar svg{width:18px;height:18px;}
+  .contact-row .c-info{flex:1;min-width:0;}
+  .contact-row .c-name{font-weight:600;font-size:.88rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .contact-row .c-phone{font-size:.72rem;color:var(--text-faint);direction:ltr;text-align:right;}
+  .empty-contacts{text-align:center;color:var(--text-dim);font-size:.85rem;padding:20px 8px;}
 
-  @media (max-width: 640px) {
-    .header-inner { flex-wrap: wrap; padding: 16px; gap: 16px; }
-    .brand-word { font-size: 22px; }
-    .header-controls { order: 3; max-width: 100%; width: 100%; }
-    .suggest-btn span { display: none; }
-    .suggest-btn { padding: 0; width: 44px; justify-content: center; border-radius: 50%; }
-    .chip-nav-wrap { top: 125px; }
-    main { padding: 12px 16px 80px; }
-    .grid { grid-template-columns: 1fr; gap: 16px; }
+  .avatar-picker-row{display:flex;justify-content:center;margin-top:4px;}
+  .avatar-pick{
+    width:92px;height:92px;border-radius:50%;border:none;background:var(--bg);color:var(--text-faint);
+    cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:0;
   }
+  .avatar-pick img{width:100%;height:100%;object-fit:cover;}
+  .avatar-pick svg{width:34px;height:34px;}
+  .avatar-actions{display:flex;justify-content:center;gap:14px;margin-top:8px;}
+  .linklike{background:none;border:none;color:var(--accent);font-size:.78rem;font-weight:600;cursor:pointer;padding:4px;font-family:inherit;}
+  .linklike.danger{color:var(--danger);}
+
+  #cropStage{
+    position:relative;width:260px;height:260px;max-width:100%;margin:12px auto 4px;
+    border-radius:50%;overflow:hidden;background:#111;touch-action:none;cursor:grab;
+    box-shadow:0 0 0 3px var(--border);
+  }
+  #cropStage.dragging{cursor:grabbing;}
+  #cropImg{position:absolute;top:0;left:0;user-select:none;pointer-events:none;}
+  #cropZoom{width:100%;margin-top:10px;}
+
+  .rec-avatar{
+    width:38px;height:38px;border-radius:50%;flex-shrink:0;overflow:hidden;
+    background:var(--border);color:var(--text-faint);display:flex;align-items:center;justify-content:center;
+  }
+  .rec-avatar img{width:100%;height:100%;object-fit:cover;}
+  .rec-avatar svg{width:18px;height:18px;}
+  .rec-name.contact-matched{color:var(--text);}
+  #fileInput{display:none;}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="brand">
-      <div class="brand-badge">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M15 7h3a5 5 0 0 1 0 10h-3"/>
-          <path d="M9 17H6a5 5 0 0 1 0-10h3"/>
-          <line x1="8" y1="12" x2="16" y2="12"/>
-        </svg>
-      </div>
-      <div class="brand-word">נט<span>לינק</span></div>
+<div id="app">
+  <header>
+    <div class="title">
+      <b>הקלטות ימות המשיח</b>
+      <span id="extLabel">שלוחה —</span>
     </div>
-    <div class="header-controls">
-      <div class="search-wrap">
-        <input id="searchInput" type="text" placeholder="חיפוש אתר...">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-        </svg>
-      </div>
-      <button class="suggest-btn" id="suggestBtn" title="הציעו אתר">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
-        <span>הציעו אתר</span>
+    <div class="actions">
+      <button class="icon" id="refreshBtn" title="רענון" aria-label="רענון">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
       </button>
-      <button class="theme-btn" id="themeBtn" aria-label="החלף מצב תצוגה">
-        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"></circle><path d="M12 2v2.5M12 19.5V22M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8l1.8-1.8M18 6l1.8-1.8"></path></svg>
-        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z"></path></svg>
+      <button class="icon" id="contactsBtn" title="אנשי קשר" aria-label="אנשי קשר">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </button>
+      <button class="icon" id="settingsBtn" title="הגדרות" aria-label="הגדרות">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>
       </button>
     </div>
-  </div>
-  <div class="chip-nav-wrap">
-    <div class="chip-nav-scroller">
-      <button class="chip-arrow chip-arrow-start" id="chipArrowStart" aria-label="גלול לצד ההתחלה">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="11 18 17 12 11 6"></polyline></svg>
-      </button>
-      <nav class="chip-nav" id="chipNav"></nav>
-      <button class="chip-arrow chip-arrow-end" id="chipArrowEnd" aria-label="גלול לצד הסוף">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="13 18 7 12 13 6"></polyline></svg>
-      </button>
-    </div>
-  </div>
-</header>
+  </header>
 
-<div class="modal-overlay" id="modalOverlay">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-    <div class="modal-header">
-      <h2 id="modalTitle">הציעו אתר לנטלינק</h2>
-      <button class="modal-close" id="modalClose" aria-label="סגור">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="18" height="18" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <p class="modal-lead">ההצעה נשלחת לבדיקה ותתווסף לדף לאחר אישור המערכת.</p>
-    <form id="suggestForm">
-      <div class="field">
-        <label for="s-name">שם האתר <span class="req">*</span></label>
-        <input id="s-name" type="text" required placeholder="לדוגמה: ויקיפדיה">
-      </div>
-      <div class="field">
-        <label for="s-url">קישור לאתר <span class="req">*</span></label>
-        <input id="s-url" type="url" required placeholder="https://example.com">
-      </div>
-      <div class="field">
-        <label for="s-desc">תיאור <span class="hint">(רשות)</span></label>
-        <textarea id="s-desc" maxlength="140" placeholder="ספרו בקצרה על האתר..."></textarea>
-      </div>
-      <div class="row2">
-        <div class="field">
-          <label for="s-logo">קישור ללוגו <span class="hint">(רשות)</span></label>
-          <input id="s-logo" type="url" placeholder="https://.../logo.png">
-        </div>
-        <div class="field">
-          <label for="s-cat">קטגוריה <span class="hint">(רשות)</span></label>
-          <input id="s-cat" type="text" placeholder="לדוגמה: חדשות, כלים">
-        </div>
-      </div>
-      <button type="submit" class="submit-btn" id="suggestSubmitBtn">
-        <span class="btn-text">שליחת ההצעה</span>
-        <span class="spinner"></span>
-      </button>
-      <div class="banner success" id="suggestSuccess">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-        ההצעה נשלחה בהצלחה, תודה!
-      </div>
-      <div class="banner error" id="suggestError">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
-        השליחה נכשלה, אנא נסו שוב.
-      </div>
-    </form>
+  <div id="list">
+    <div class="status-line" id="statusLine">פותחים הגדרות כדי להתחבר…</div>
+  </div>
+
+  <div id="bottombar">
+    <button class="attach" id="uploadBtn" title="העלאת קובץ שמע" aria-label="העלאת קובץ שמע">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+    </button>
+    <input type="file" id="fileInput" accept="audio/*">
+    <div id="placeholderText">לחצו על המיקרופון כדי להקליט הודעה חדשה</div>
+    <div id="recTimer"><span class="dot"></span><span id="recTimerText">00:00</span></div>
+    <button id="micBtn" title="הקלטה" aria-label="הקלטה">
+      <svg id="micIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+    </button>
   </div>
 </div>
 
-<main id="main">
-  <div class="skeleton-grid" id="skeleton">
-    <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
-    <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
+<div id="settingsOverlay" class="ov">
+  <div class="ov-box">
+    <h2>חיבור למערכת ימות המשיח</h2>
+    <div class="sub">פרטי החיבור נשמרים רק בדפדפן שלכם (localStorage). אנשי הקשר נשמרים בגיליון Google Sheets משותף לפי הטוקן.</div>
+
+    <label for="tokenInput">טוקן (מספר מערכת:סיסמה)</label>
+    <input type="text" id="tokenInput" placeholder="0771234567:1234" dir="ltr">
+
+    <label for="extInput">מספר שלוחה</label>
+    <input type="text" id="extInput" placeholder="1" dir="ltr" value="1">
+    <div class="hint">הנתיב שממנו יישלפו ההקלטות: ivr2:/&lt;שלוחה&gt;/. שלוש ההקלטות האחרונות ברשימה (הקלטות מערכת) מוסתרות אוטומטית. מספר שולח מזוהה אוטומטית כאשר שם הקובץ בפורמט Phone-...-Date-... (תלוי בהגדרות השלוחה), ובנוסף מנסים לזהות אותו משדה נוסף בתשובת השרת אם קיים כזה.</div>
+
+    <label for="tzintukPhoneInput">שליחת צינתוק בהקלטה חדשה (אופציונלי)</label>
+    <input type="text" id="tzintukPhoneInput" placeholder="מספר טלפון, השאירו ריק לביטול" dir="ltr">
+    <div class="hint">אם יוזן מספר, בכל הקלטה חדשה (מיקרופון או קובץ) תישלח אליו שיחת צינתוק דרך פקודת RunTzintuk. כדאי לוודא מול התיעוד העדכני של ימות המשיח שהפרמטרים תואמים לחשבון שלכם, ולעקוב אחר קונסולת הדפדפן (F12) אם השליחה לא מצליחה.</div>
+
+    <label for="tzintukCallerIdInput">זיהוי מתקשר לצינתוק (אופציונלי)</label>
+    <input type="text" id="tzintukCallerIdInput" placeholder="השאירו ריק לזיהוי ברירת מחדל" dir="ltr">
+
+    <div class="warn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span>ה-API של ימות המשיח לא תמיד תומך בקריאות ישירות מהדפדפן (CORS). אם טעינה, מחיקה, העלאה או ציור גלי הקול נכשלים, ייתכן שיידרש שרת ביניים (proxy). הטוקן חשוף בכתובת הבקשה — מומלץ סיסמה ייעודית ולא סיסמת הניהול הראשית.</span>
+    </div>
+
+    <div class="btnrow">
+      <button class="secondary" id="closeSettingsBtn">סגירה</button>
+      <button class="primary" id="saveSettingsBtn">שמירה וטעינה</button>
+    </div>
   </div>
-</main>
+</div>
+
+<div id="contactsOverlay" class="ov">
+  <div class="ov-box">
+    <h2>אנשי קשר</h2>
+    <div class="sub">שם ותמונה יוצגו אוטומטית בהקלטות שמזוהות מהמספר שלהם. אנשי הקשר נשמרים בגיליון Google Sheets ונטענים לפי הטוקן, כך שהם משותפים לכל מכשיר שמתחבר איתו.</div>
+    <div id="contactsList"></div>
+    <div class="btnrow">
+      <button class="secondary" id="closeContactsBtn">סגירה</button>
+      <button class="primary" id="addContactBtn">איש קשר חדש</button>
+    </div>
+  </div>
+</div>
+
+<div id="contactEditOverlay" class="ov">
+  <div class="ov-box">
+    <h2 id="contactEditTitle">איש קשר חדש</h2>
+    <div class="avatar-picker-row">
+      <button type="button" id="avatarPickBtn" class="avatar-pick" aria-label="בחירת תמונת פרופיל">
+        <img id="avatarPreviewImg" alt="" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+    <input type="file" id="contactPhotoInput" accept="image/*" style="display:none;">
+    <div class="avatar-actions">
+      <button type="button" class="linklike" id="changePhotoBtn">הוספת/שינוי תמונה</button>
+      <button type="button" class="linklike danger" id="removePhotoBtn" style="display:none;">הסרת תמונה</button>
+    </div>
+
+    <label for="contactNameInput">שם</label>
+    <input type="text" id="contactNameInput" placeholder="לדוגמה: יוסי כהן">
+
+    <label for="contactPhoneInput">מספר טלפון</label>
+    <input type="text" id="contactPhoneInput" placeholder="050-1234567" dir="ltr">
+
+    <div class="btnrow">
+      <button class="secondary danger-text" id="deleteContactBtn" style="display:none;">מחיקה</button>
+      <button class="secondary" id="cancelContactEditBtn">ביטול</button>
+      <button class="primary" id="saveContactBtn">שמירה</button>
+    </div>
+  </div>
+</div>
+
+<div id="cropOverlay" class="ov">
+  <div class="ov-box" style="max-width:340px;">
+    <h2>חיתוך תמונה</h2>
+    <div class="sub">גררו למיקום הרצוי והשתמשו במחוון להגדלה/הקטנה</div>
+    <div id="cropStage">
+      <img id="cropImg" alt="" draggable="false">
+    </div>
+    <input type="range" id="cropZoom" min="1" max="3" step="0.01" value="1">
+    <div class="btnrow">
+      <button class="secondary" id="cropCancelBtn">ביטול</button>
+      <button class="primary" id="cropConfirmBtn">אישור חיתוך</button>
+    </div>
+  </div>
+</div>
 
 <script>
-  // ===== קישור ה-CSV של הגיליון (טור: קישור, שם האתר, תיאור, לוגו, קטגוריה) =====
-  const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqW9PU8W3ao33tsiYdwLCKxoENM1zJJsR4LfNrZp1gjLuuuUDH6m13XiVev9LDg8XkpgBwL_ITPkc-/pub?gid=0&single=true&output=csv";
-  // ===== Apps Script של הגיליון השיתופי - להצעות אתרים מהמשתמשים =====
-  const SUGGEST_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx6CgLnK2WO983z366MzKHThSxwG6rLkaN_Seim9loWPIFHAn1Norxx924ukMCx2ykqWw/exec";
+const BASE_URL = 'https://www.call2all.co.il/ym/api/';
+const LS_TOKEN = 'yemot_token';
+const LS_EXT = 'yemot_ext';
+const LS_TZINTUK_PHONE = 'yemot_tzintuk_phone';
+const LS_TZINTUK_CALLERID = 'yemot_tzintuk_callerid';
+const HIDE_LAST_N = 3;
 
-  const mainEl = document.getElementById('main');
-  const chipNav = document.getElementById('chipNav');
-  const chipArrowStart = document.getElementById('chipArrowStart');
-  const chipArrowEnd = document.getElementById('chipArrowEnd');
+// ===== אנשי קשר - Google Sheets (דרך Apps Script Web App) =====
+const CONTACTS_API = 'https://script.google.com/macros/s/AKfycbydQSs5sD_F7KYI77gT8wayot9UeTdnxAfidz8eAp_ZS3dOw1jZsbuhjKHKxpBtpRaM/exec';
 
-  // ---------- Chip nav horizontal scroll (RTL-safe) ----------
-  function detectRtlScrollType(){
-    const el = document.createElement('div');
-    el.dir = 'rtl';
-    el.style.cssText = 'position:absolute;top:-9999px;width:4px;height:1px;overflow:scroll;font-size:14px;';
-    const inner = document.createElement('div');
-    inner.style.width = '8px';
-    el.appendChild(inner);
-    document.body.appendChild(el);
-    let type = 'default';
-    if(el.scrollLeft > 0){
-      type = 'default';
-    } else {
-      el.scrollLeft = 1;
-      type = (el.scrollLeft === 0) ? 'negative' : 'reverse';
-    }
-    el.remove();
-    return type;
-  }
-  const rtlScrollType = detectRtlScrollType();
-
-  function scrollFraction(){
-    const max = chipNav.scrollWidth - chipNav.clientWidth;
-    if(max <= 0) return 0;
-    const sl = chipNav.scrollLeft;
-    if(rtlScrollType === 'negative') return (-sl) / max;
-    if(rtlScrollType === 'reverse') return (max - sl) / max;
-    return sl / max;
-  }
-  function scrollChips(forward){
-    const amount = 240;
-    const delta = (rtlScrollType === 'default') ? amount : -amount;
-    chipNav.scrollBy({ left: forward ? delta : -delta, behavior: 'smooth' });
-  }
-  function updateChipArrows(){
-    const max = chipNav.scrollWidth - chipNav.clientWidth;
-    const overflow = max > 4;
-    chipArrowStart.classList.toggle('show', overflow);
-    chipArrowEnd.classList.toggle('show', overflow);
-    if(!overflow) return;
-    const frac = scrollFraction();
-    chipArrowStart.disabled = frac <= 0.02;
-    chipArrowEnd.disabled = frac >= 0.98;
-  }
-  chipArrowStart.addEventListener('click', () => scrollChips(false));
-  chipArrowEnd.addEventListener('click', () => scrollChips(true));
-  chipNav.addEventListener('scroll', updateChipArrows, { passive: true });
-  window.addEventListener('resize', updateChipArrows);
-
-  // ---------- Category colors ----------
-  const CATEGORY_PALETTE = ['#4F46E5','#059669','#D97706','#DC2626','#DB2777','#7C3AED','#0891B2','#65A30D','#EA580C','#2563EB','#C026D3','#16A34A'];
-  function categoryColor(name){
-    let hash = 0;
-    for(let i=0;i<name.length;i++){ hash = (hash * 31 + name.charCodeAt(i)) >>> 0; }
-    return CATEGORY_PALETTE[hash % CATEGORY_PALETTE.length];
-  }
-
-  // ---------- Theme ----------
-  const themeBtn = document.getElementById('themeBtn');
-  let isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme();
-  themeBtn.addEventListener('click', () => { isDark = !isDark; applyTheme(); });
-  function applyTheme(){ document.documentElement.classList.toggle('dark', isDark); }
-
-  // ---------- CSV Parser ----------
-  function parseCSV(text){
-    const rows = [];
-    let row = [], field = '', inQuotes = false;
-    for(let i=0;i<text.length;i++){
-      const c = text[i], next = text[i+1];
-      if(inQuotes){
-        if(c === '"' && next === '"'){ field += '"'; i++; }
-        else if(c === '"'){ inQuotes = false; }
-        else { field += c; }
-      } else {
-        if(c === '"'){ inQuotes = true; }
-        else if(c === ','){ row.push(field); field=''; }
-        else if(c === '\r'){ /* skip */ }
-        else if(c === '\n'){ row.push(field); rows.push(row); row=[]; field=''; }
-        else { field += c; }
-      }
-    }
-    if(field.length || row.length){ row.push(field); rows.push(row); }
-    if(!rows.length) return [];
-    const headers = rows[0].map(h => h.trim());
-    return rows.slice(1)
-      .filter(r => r.some(v => v.trim() !== ''))
-      .map(r => {
-        const obj = {};
-        headers.forEach((h,i) => obj[h] = (r[i] || '').trim());
-        return obj;
-      });
-  }
-
-  function norm(obj, keys){
-    for(const k of keys){ if(obj[k]) return obj[k]; }
-    return '';
-  }
-
-  // ---------- Fetch & Render ----------
-  let allSites = [];
-
-  async function load(){
-    try{
-      const res = await fetch(SHEET_CSV_URL);
-      if(!res.ok) throw new Error('bad status');
-      const text = await res.text();
-      const rows = parseCSV(text);
-      allSites = rows.map(r => ({
-        url: norm(r, ['קישור','URL','קישור לאתר']),
-        name: norm(r, ['שם האתר','שם']),
-        desc: norm(r, ['תיאור']),
-        logo: norm(r, ['לוגו','קישור ללוגו']),
-        category: norm(r, ['קטגוריה']) || 'כללי'
-      })).filter(s => s.url && s.name);
-      render(allSites);
-    }catch(err){
-      renderError();
-    }
-  }
-
-  function renderError(){
-    mainEl.innerHTML = `
-      <div class="state-box">
-        <h3>לא הצלחנו לטעון את רשימת האתרים</h3>
-        <p>ודאו שהגיליון מקושר כראוי לרשת, ונסו שוב.</p>
-        <button class="retry-btn" onclick="load()">נסה שוב</button>
-      </div>`;
-    chipNav.innerHTML = '';
-    chipArrowStart.classList.remove('show');
-    chipArrowEnd.classList.remove('show');
-  }
-
-  function render(sites){
-    if(!sites.length){
-      mainEl.innerHTML = `
-        <div class="state-box">
-          <h3>עדיין לא נוספו אתרים</h3>
-          <p>הוסיפו שורה בגיליון עם קישור, שם, תיאור, לוגו וקטגוריה — והדף יתעדכן.</p>
-        </div>`;
-      chipNav.innerHTML = '';
-      chipArrowStart.classList.remove('show');
-      chipArrowEnd.classList.remove('show');
-      return;
-    }
-
-    const categories = [...new Set(sites.map(s => s.category))].sort((a,b) => a.localeCompare(b,'he'));
-
-    chipNav.innerHTML = `<button class="chip active" data-cat="all">הכל</button>` +
-      categories.map(c => `<button class="chip" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
-
-    mainEl.innerHTML = categories.map(cat => {
-      const catSites = sites.filter(s => s.category === cat);
-      return `
-        <section class="category-section" id="cat-${slug(cat)}">
-          <div class="category-heading"><span class="dot" style="background:${categoryColor(cat)}"></span><h2>${escapeHtml(cat)}</h2><span class="line"></span></div>
-          <div class="grid">
-            ${catSites.map(cardHtml).join('')}
-          </div>
-        </section>`;
-    }).join('');
-
-    // Chip click -> scroll
-    chipNav.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        const cat = chip.dataset.cat;
-        chipNav.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        if(cat === 'all'){ window.scrollTo({top:0, behavior:'smooth'}); return; }
-        const target = document.getElementById('cat-' + slug(cat));
-        if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
-      });
-    });
-
-    setupScrollSpy(categories);
-    updateChipArrows();
-  }
-
-  function cardHtml(s){
-    const initials = escapeHtml((s.name || '?').trim().charAt(0));
-    return `
-      <a class="card" href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer">
-        <div class="card-top">
-          ${s.logo
-            ? `<img class="card-logo" src="${escapeAttr(s.logo)}" alt="" loading="lazy"
-                 onerror="this.outerHTML='<div class=&quot;card-logo-fallback&quot;>${initials}</div>'">`
-            : `<div class="card-logo-fallback">${initials}</div>`}
-          <div class="card-name">${escapeHtml(s.name)}</div>
-        </div>
-        ${s.desc ? `<p class="card-desc">${escapeHtml(s.desc)}</p>` : ''}
-      </a>`;
-  }
-
-  function setupScrollSpy(categories){
-    const sections = categories.map(c => document.getElementById('cat-' + slug(c))).filter(Boolean);
-    if(!('IntersectionObserver' in window) || !sections.length) return;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting){
-          const id = entry.target.id;
-          chipNav.querySelectorAll('.chip').forEach(c => {
-            c.classList.toggle('active', 'cat-' + slug(c.dataset.cat) === id);
-          });
-        }
-      });
-    }, { rootMargin: '-150px 0px -70% 0px' });
-    sections.forEach(s => observer.observe(s));
-  }
-
-  // ---------- Search ----------
-  document.getElementById('searchInput').addEventListener('input', (e) => {
-    const q = e.target.value.trim().toLowerCase();
-    if(!q){ render(allSites); return; }
-    const filtered = allSites.filter(s =>
-      s.name.toLowerCase().includes(q) || (s.desc && s.desc.toLowerCase().includes(q))
-    );
-    render(filtered);
+// ===== העלאת תמונות - Cloudinary =====
+const CLOUDINARY_CLOUD_NAME = 'rpbok3l7';
+const CLOUDINARY_UPLOAD_PRESET = 'metailim';
+async function uploadToCloudinary(file){
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: 'POST',
+    body: fd
   });
+  if(!res.ok) throw new Error('שגיאת העלאה לקלאודינרי: ' + res.status);
+  const data = await res.json();
+  return data.secure_url;
+}
+const BAR_COUNT = 40;
 
-  function slug(str){ return str.replace(/[^\p{L}\p{N}]+/gu, '-'); }
-  function escapeHtml(str){
-    return String(str).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const listEl = document.getElementById('list');
+const extLabel = document.getElementById('extLabel');
+const settingsOverlay = document.getElementById('settingsOverlay');
+const tokenInput = document.getElementById('tokenInput');
+const extInput = document.getElementById('extInput');
+const tzintukPhoneInput = document.getElementById('tzintukPhoneInput');
+const tzintukCallerIdInput = document.getElementById('tzintukCallerIdInput');
+
+let activeAudio = null;
+let activePlayBtn = null;
+let activeSetPlayed = null;
+let audioCtx = null;
+
+function getToken(){ return localStorage.getItem(LS_TOKEN) || ''; }
+function getExt(){ return localStorage.getItem(LS_EXT) || '1'; }
+function getTzintukPhone(){ return localStorage.getItem(LS_TZINTUK_PHONE) || ''; }
+function getTzintukCallerId(){ return localStorage.getItem(LS_TZINTUK_CALLERID) || ''; }
+
+function openSettings(){
+  tokenInput.value = getToken();
+  extInput.value = getExt();
+  tzintukPhoneInput.value = getTzintukPhone();
+  tzintukCallerIdInput.value = getTzintukCallerId();
+  settingsOverlay.classList.add('open');
+}
+function closeSettings(){ settingsOverlay.classList.remove('open'); }
+
+document.getElementById('settingsBtn').onclick = openSettings;
+document.getElementById('closeSettingsBtn').onclick = closeSettings;
+document.getElementById('refreshBtn').onclick = loadRecordings;
+
+document.getElementById('saveSettingsBtn').onclick = () => {
+  const t = tokenInput.value.trim();
+  const e = extInput.value.trim() || '1';
+  if(!t){ alert('נא להזין טוקן'); return; }
+  localStorage.setItem(LS_TOKEN, t);
+  localStorage.setItem(LS_EXT, e);
+  localStorage.setItem(LS_TZINTUK_PHONE, tzintukPhoneInput.value.trim());
+  localStorage.setItem(LS_TZINTUK_CALLERID, tzintukCallerIdInput.value.trim());
+  closeSettings();
+  fetchContactsFromServer().then(loadRecordings);
+};
+
+// ===== צינתוק בהקלטה חדשה =====
+// שולח שיחת צינתוק דרך פקודת RunTzintuk של ימות המשיח. שם הפרמטר של המספר
+// המיועד (phone) מבוסס על מוסכמות שאר פקודות ה-API של ימות המשיח; אם השליחה
+// נכשלת, בדקו את השגיאה שמודפסת לקונסולה מול התיעוד העדכני בפורום המפתחים.
+async function sendTzintuk(){
+  const phone = getTzintukPhone();
+  if(!phone) return;
+  const token = getToken();
+  if(!token) return;
+  const params = new URLSearchParams({ token, phone });
+  const callerId = getTzintukCallerId();
+  if(callerId) params.set('callerId', callerId);
+  try{
+    const res = await fetch(BASE_URL + 'RunTzintuk?' + params.toString());
+    const data = await res.json();
+    if(data.responseStatus !== 'OK'){
+      console.warn('שליחת הצינתוק נכשלה:', data.message || data.responseStatus);
+    }
+  }catch(err){
+    console.warn('שגיאה בשליחת הצינתוק (ייתכן חסימת CORS):', err.message);
   }
-  function escapeAttr(str){ return escapeHtml(str); }
+}
 
-  // ---------- Suggest a site modal ----------
-  const modalOverlay = document.getElementById('modalOverlay');
-  const suggestBtn = document.getElementById('suggestBtn');
-  const modalClose = document.getElementById('modalClose');
-  const suggestForm = document.getElementById('suggestForm');
-  const suggestSubmitBtn = document.getElementById('suggestSubmitBtn');
-  const suggestSuccess = document.getElementById('suggestSuccess');
-  const suggestError = document.getElementById('suggestError');
+// ===== אנשי קשר =====
+const ICON_PERSON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+const ICON_PERSON_ADD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="16" y1="11" x2="22" y2="11"/></svg>';
+const ICON_PENCIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
 
-  function openModal(){ 
-    modalOverlay.style.display = 'flex';
-    // Timeout needed to allow display:flex to apply before adding the open class for the transition
-    setTimeout(() => modalOverlay.classList.add('open'), 10);
-    document.body.style.overflow = 'hidden'; 
+const contactsOverlay = document.getElementById('contactsOverlay');
+const contactsList = document.getElementById('contactsList');
+const contactEditOverlay = document.getElementById('contactEditOverlay');
+const contactEditTitle = document.getElementById('contactEditTitle');
+const avatarPickBtn = document.getElementById('avatarPickBtn');
+const avatarPreviewImg = document.getElementById('avatarPreviewImg');
+const contactPhotoInput = document.getElementById('contactPhotoInput');
+const removePhotoBtn = document.getElementById('removePhotoBtn');
+const contactNameInput = document.getElementById('contactNameInput');
+const contactPhoneInput = document.getElementById('contactPhoneInput');
+const deleteContactBtn = document.getElementById('deleteContactBtn');
+
+// אנשי הקשר נטענים מהגיליון (לפי הטוקן) ומוחזקים בזיכרון בשביל רינדור מהיר וסינכרוני.
+let contactsCache = [];
+
+function getContacts(){ return contactsCache; }
+
+// טוען מחדש את אנשי הקשר של הטוקן הנוכחי מהגיליון (Apps Script Web App).
+async function fetchContactsFromServer(){
+  const token = getToken();
+  if(!token){ contactsCache = []; return contactsCache; }
+  try{
+    const url = CONTACTS_API + '?action=list&key=' + encodeURIComponent(token);
+    const res = await fetch(url);
+    const data = await res.json();
+    contactsCache = (data && data.ok && Array.isArray(data.contacts)) ? data.contacts : [];
+  }catch(err){
+    console.warn('שגיאה בטעינת אנשי קשר מהגיליון:', err.message);
   }
-  function closeModal(){ 
-    modalOverlay.classList.remove('open'); 
-    setTimeout(() => modalOverlay.style.display = 'none', 300); // Wait for transition
-    document.body.style.overflow = ''; 
+  return contactsCache;
+}
+
+// שומר איש קשר בודד בגיליון (הוספה/עדכון), ומעדכן את המטמון המקומי.
+async function saveContactToServer(contact){
+  const token = getToken();
+  const res = await fetch(CONTACTS_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' }, // נשאר text/plain כדי למנוע preflight/CORS מול Apps Script
+    body: JSON.stringify({
+      action: 'save',
+      key: token,
+      id: contact.id,
+      name: contact.name,
+      phone: contact.phone,
+      photo: contact.photo || ''
+    })
+  });
+  const data = await res.json();
+  if(!data || !data.ok) throw new Error((data && data.error) || 'שמירה נכשלה');
+  const idx = contactsCache.findIndex(c => c.id === contact.id);
+  if(idx !== -1) contactsCache[idx] = contact; else contactsCache.push(contact);
+}
+
+// מוחק איש קשר מהגיליון, ומעדכן את המטמון המקומי.
+async function deleteContactFromServer(id){
+  const token = getToken();
+  const res = await fetch(CONTACTS_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain' },
+    body: JSON.stringify({ action: 'delete', key: token, id })
+  });
+  const data = await res.json();
+  if(!data || !data.ok) throw new Error((data && data.error) || 'מחיקה נכשלה');
+  contactsCache = contactsCache.filter(c => c.id !== id);
+}
+
+// משאיר רק את 9 הספרות האחרונות של המספר, כדי שהשוואה תצליח בלי קשר
+// לקידומת בינלאומית (972+) או לאפס המוביל.
+function normalizePhone(str){
+  const digits = String(str || '').replace(/\D/g, '');
+  return digits.slice(-9);
+}
+function findContactByPhone(phone){
+  const target = normalizePhone(phone);
+  if(!target) return null;
+  return getContacts().find(c => normalizePhone(c.phone) === target) || null;
+}
+
+function contactAvatarHTML(contact){
+  return contact && contact.photo
+    ? '<img src="' + contact.photo + '" alt="">'
+    : ICON_PERSON;
+}
+
+function renderContactsList(){
+  const contacts = getContacts();
+  contactsList.innerHTML = '';
+  if(contacts.length === 0){
+    const empty = document.createElement('div');
+    empty.className = 'empty-contacts';
+    empty.textContent = 'אין עדיין אנשי קשר. הוסיפו איש קשר כדי שהשם והתמונה יוצגו בהקלטות שלו.';
+    contactsList.appendChild(empty);
+    return;
   }
+  contacts.slice().sort((a,b) => (a.name||'').localeCompare(b.name||'', 'he')).forEach(contact => {
+    const row = document.createElement('div');
+    row.className = 'contact-row';
+    row.innerHTML =
+      '<div class="c-avatar">' + contactAvatarHTML(contact) + '</div>' +
+      '<div class="c-info">' +
+        '<div class="c-name"></div>' +
+        '<div class="c-phone"></div>' +
+      '</div>' +
+      '<button type="button" class="delete-btn" aria-label="עריכה">' + ICON_PENCIL + '</button>';
+    row.querySelector('.c-name').textContent = contact.name || '(ללא שם)';
+    row.querySelector('.c-phone').textContent = contact.phone || '';
+    row.onclick = () => openContactEdit(contact.id);
+    contactsList.appendChild(row);
+  });
+}
 
-  suggestBtn.addEventListener('click', openModal);
-  modalClose.addEventListener('click', closeModal);
-  modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) closeModal(); });
-  document.addEventListener('keydown', (e) => { if(e.key === 'Escape' && modalOverlay.classList.contains('open')) closeModal(); });
+async function openContacts(){
+  contactsOverlay.classList.add('open');
+  contactsList.innerHTML = '<div class="empty-contacts">טוען אנשי קשר…</div>';
+  await fetchContactsFromServer();
+  renderContactsList();
+}
+function closeContacts(){ contactsOverlay.classList.remove('open'); }
 
-  suggestForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    suggestSuccess.style.display = 'none';
-    suggestError.style.display = 'none';
+let editingContactId = null;
+let pendingAvatarPhoto = null; // dataURL שנבחר בעורך התמונה, טרם נשמר לאיש הקשר
 
-    const payload = {
-      name: document.getElementById('s-name').value.trim(),
-      url: document.getElementById('s-url').value.trim(),
-      desc: document.getElementById('s-desc').value.trim(),
-      logo: document.getElementById('s-logo').value.trim(),
-      category: document.getElementById('s-cat').value.trim()
-    };
-    if(!payload.name || !payload.url){ return; }
+function openContactEdit(id, prefillPhone){
+  const contact = id ? getContacts().find(c => c.id === id) : null;
+  editingContactId = contact ? contact.id : null;
+  pendingAvatarPhoto = contact ? (contact.photo || null) : null;
+  contactEditTitle.textContent = contact ? 'עריכת איש קשר' : 'איש קשר חדש';
+  contactNameInput.value = contact ? contact.name || '' : '';
+  contactPhoneInput.value = contact ? (contact.phone || '') : (prefillPhone || '');
+  deleteContactBtn.style.display = contact ? '' : 'none';
+  refreshAvatarPreview();
+  closeContacts();
+  contactEditOverlay.classList.add('open');
+}
+function closeContactEdit(){ contactEditOverlay.classList.remove('open'); }
 
-    suggestSubmitBtn.classList.add('loading');
-    suggestSubmitBtn.disabled = true;
+function refreshAvatarPreview(){
+  if(pendingAvatarPhoto){
+    avatarPreviewImg.src = pendingAvatarPhoto;
+    avatarPreviewImg.style.display = 'block';
+    removePhotoBtn.style.display = '';
+  } else {
+    avatarPreviewImg.style.display = 'none';
+    avatarPreviewImg.src = '';
+    removePhotoBtn.style.display = 'none';
+  }
+}
+
+document.getElementById('contactsBtn').onclick = openContacts;
+document.getElementById('closeContactsBtn').onclick = closeContacts;
+document.getElementById('addContactBtn').onclick = () => openContactEdit(null);
+document.getElementById('cancelContactEditBtn').onclick = closeContactEdit;
+avatarPickBtn.onclick = () => contactPhotoInput.click();
+document.getElementById('changePhotoBtn').onclick = () => contactPhotoInput.click();
+removePhotoBtn.onclick = () => { pendingAvatarPhoto = null; refreshAvatarPreview(); };
+
+const saveContactBtn = document.getElementById('saveContactBtn');
+saveContactBtn.onclick = async () => {
+  const name = contactNameInput.value.trim();
+  const phone = contactPhoneInput.value.trim();
+  if(!name){ alert('נא להזין שם'); return; }
+  if(!phone){ alert('נא להזין מספר טלפון'); return; }
+  const id = editingContactId || ((window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'c' + Date.now() + Math.random().toString(16).slice(2));
+  const contact = { id, name, phone, photo: pendingAvatarPhoto || '' };
+  saveContactBtn.disabled = true;
+  saveContactBtn.textContent = 'שומר…';
+  try{
+    await saveContactToServer(contact);
+    closeContactEdit();
+    loadRecordings();
+  }catch(err){
+    alert('שגיאה בשמירת איש הקשר: ' + err.message);
+  }finally{
+    saveContactBtn.disabled = false;
+    saveContactBtn.textContent = 'שמירה';
+  }
+};
+
+deleteContactBtn.onclick = async () => {
+  if(!editingContactId) return;
+  const ok = confirm('למחוק את איש הקשר?');
+  if(!ok) return;
+  try{
+    await deleteContactFromServer(editingContactId);
+    closeContactEdit();
+    loadRecordings();
+  }catch(err){
+    alert('שגיאה במחיקת איש הקשר: ' + err.message);
+  }
+};
+
+// ===== חיתוך תמונת פרופיל =====
+const cropOverlay = document.getElementById('cropOverlay');
+const cropStage = document.getElementById('cropStage');
+const cropImg = document.getElementById('cropImg');
+const cropZoom = document.getElementById('cropZoom');
+const CROP_STAGE_SIZE = 260;
+const CROP_OUTPUT_SIZE = 320;
+
+let cropState = null; // { naturalW, naturalH, coverScale, zoom, x, y }
+
+function openCropper(imageDataUrl){
+  cropImg.onload = () => {
+    const naturalW = cropImg.naturalWidth;
+    const naturalH = cropImg.naturalHeight;
+    const coverScale = CROP_STAGE_SIZE / Math.min(naturalW, naturalH);
+    cropState = { naturalW, naturalH, coverScale, zoom: 1, x: 0, y: 0 };
+    cropZoom.value = '1';
+    applyCropTransform(true);
+    cropOverlay.classList.add('open');
+  };
+  cropImg.src = imageDataUrl;
+}
+function closeCropper(){
+  cropOverlay.classList.remove('open');
+  cropState = null;
+}
+
+function applyCropTransform(recenter){
+  if(!cropState) return;
+  const s = cropState.coverScale * cropState.zoom;
+  const w = cropState.naturalW * s;
+  const h = cropState.naturalH * s;
+  if(recenter){
+    cropState.x = (CROP_STAGE_SIZE - w) / 2;
+    cropState.y = (CROP_STAGE_SIZE - h) / 2;
+  } else {
+    const minX = CROP_STAGE_SIZE - w, maxX = 0;
+    const minY = CROP_STAGE_SIZE - h, maxY = 0;
+    cropState.x = Math.min(maxX, Math.max(minX, cropState.x));
+    cropState.y = Math.min(maxY, Math.max(minY, cropState.y));
+  }
+  cropImg.style.width = w + 'px';
+  cropImg.style.height = h + 'px';
+  cropImg.style.transform = 'translate(' + cropState.x + 'px,' + cropState.y + 'px)';
+}
+
+cropZoom.oninput = () => {
+  if(!cropState) return;
+  cropState.zoom = parseFloat(cropZoom.value);
+  applyCropTransform(false);
+};
+
+// גרירה לבחירת האזור הרצוי בתמונה (עכבר ומגע כאחד דרך Pointer Events)
+let dragStart = null;
+cropStage.addEventListener('pointerdown', (e) => {
+  if(!cropState) return;
+  dragStart = { x: e.clientX, y: e.clientY, origX: cropState.x, origY: cropState.y };
+  cropStage.classList.add('dragging');
+  cropStage.setPointerCapture(e.pointerId);
+});
+cropStage.addEventListener('pointermove', (e) => {
+  if(!dragStart || !cropState) return;
+  cropState.x = dragStart.origX + (e.clientX - dragStart.x);
+  cropState.y = dragStart.origY + (e.clientY - dragStart.y);
+  applyCropTransform(false);
+});
+function endDrag(){ dragStart = null; cropStage.classList.remove('dragging'); }
+cropStage.addEventListener('pointerup', endDrag);
+cropStage.addEventListener('pointercancel', endDrag);
+
+document.getElementById('cropCancelBtn').onclick = () => {
+  closeCropper();
+  contactPhotoInput.value = '';
+};
+
+const cropConfirmBtn = document.getElementById('cropConfirmBtn');
+cropConfirmBtn.onclick = () => {
+  if(!cropState) return;
+  const s = cropState.coverScale * cropState.zoom;
+  const sx = -cropState.x / s;
+  const sy = -cropState.y / s;
+  const sSize = CROP_STAGE_SIZE / s;
+  const canvas = document.createElement('canvas');
+  canvas.width = CROP_OUTPUT_SIZE;
+  canvas.height = CROP_OUTPUT_SIZE;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(cropImg, sx, sy, sSize, sSize, 0, 0, CROP_OUTPUT_SIZE, CROP_OUTPUT_SIZE);
+
+  cropConfirmBtn.disabled = true;
+  cropConfirmBtn.textContent = 'מעלה תמונה…';
+  canvas.toBlob(async (blob) => {
     try{
-      await fetch(SUGGEST_WEB_APP_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(payload)
-      });
-      suggestSuccess.style.display = 'flex';
-      suggestForm.reset();
-      setTimeout(closeModal, 2000);
+      const url = await uploadToCloudinary(blob);
+      pendingAvatarPhoto = url; // נשמר כ-URL של קלאודינרי, לא כ-base64
+      refreshAvatarPreview();
+      closeCropper();
+      contactPhotoInput.value = '';
     }catch(err){
-      suggestError.style.display = 'flex';
+      alert('שגיאה בהעלאת התמונה: ' + err.message);
     }finally{
-      suggestSubmitBtn.classList.remove('loading');
-      suggestSubmitBtn.disabled = false;
+      cropConfirmBtn.disabled = false;
+      cropConfirmBtn.textContent = 'אישור חיתוך';
     }
+  }, 'image/jpeg', 0.9);
+};
+
+contactPhotoInput.onchange = () => {
+  const file = contactPhotoInput.files && contactPhotoInput.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => openCropper(reader.result);
+  reader.readAsDataURL(file);
+};
+
+const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+const ICON_MIC = document.getElementById('micIcon').outerHTML;
+const ICON_STOP = '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
+const ICON_CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
+const ICON_TRASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>';
+
+function setStatus(msg, isError){
+  if(activeAudio){ activeAudio.pause(); activeAudio = null; activePlayBtn = null; activeSetPlayed = null; }
+  listEl.innerHTML = '';
+  const div = document.createElement('div');
+  div.className = 'status-line' + (isError ? ' error' : '');
+  div.textContent = msg;
+  listEl.appendChild(div);
+}
+
+function extPath(ext){
+  return 'ivr2:/' + ext.replace(/^\/+|\/+$/g,'') + '/';
+}
+
+// זיהוי מספר שולח + תאריך משם קובץ בפורמט Phone-XXXXXXXXXX-Date-YYYY-MM-DD-HH-MM-SS
+function parsePhoneAndDate(name){
+  const m = (name || '').match(/Phone[-_](\d+)[-_]Date[-_](\d{4}[-_]\d{2}[-_]\d{2}[-_]\d{2}[-_]\d{2}[-_]\d{2})/i);
+  if(!m) return null;
+  const parts = m[2].split(/[-_]/);
+  const dateLabel = parts.length === 6
+    ? parts[2] + '/' + parts[1] + '/' + parts[0] + ' ' + parts[3] + ':' + parts[4]
+    : m[2];
+  return { phone: m[1], date: dateLabel };
+}
+
+// גיבוי לזיהוי מספר שולח: חיפוש כללי של שדה שנראה כמו מספר טלפון/מזהה מתקשר
+// באובייקט הקובץ שמוחזר מהשרת, למקרה ששם הקובץ עצמו לא בפורמט Phone-...-Date-...
+function extractPhoneFallback(file){
+  const phoneKeyPattern = /^(phone|callerid|caller_id|calleridnum|ani|src|from|number|tel)$/i;
+  for(const key of Object.keys(file)){
+    if(!phoneKeyPattern.test(key)) continue;
+    const raw = file[key];
+    if(!raw) continue;
+    const digits = String(raw).replace(/\D/g, '');
+    if(digits.length >= 7) return digits;
+  }
+  return null;
+}
+
+// חיפוש כללי של שדה תאריך באובייקט הקובץ, כגיבוי כאשר אין דפוס Phone/Date בשם
+function extractDateLabel(file){
+  for(const key of Object.keys(file)){
+    if(/date|time/i.test(key) && typeof file[key] === 'string' && file[key].length >= 8){
+      return file[key];
+    }
+  }
+  return null;
+}
+
+function fmtTime(sec){
+  if(!isFinite(sec) || sec < 0) sec = 0;
+  const m = Math.floor(sec/60);
+  const s = Math.floor(sec%60);
+  return m + ':' + String(s).padStart(2,'0');
+}
+
+async function loadRecordings(){
+  const token = getToken();
+  const ext = getExt();
+  extLabel.textContent = 'שלוחה ' + ext;
+
+  if(!token){
+    setStatus('לחצו על הגדרות למעלה כדי להזין טוקן ומספר שלוחה.');
+    return;
+  }
+
+  setStatus('טוען הקלטות…');
+
+  const url = BASE_URL + 'GetIVR2Dir?token=' + encodeURIComponent(token) + '&path=' + encodeURIComponent(extPath(ext));
+
+  let data;
+  try{
+    const res = await fetch(url);
+    data = await res.json();
+  }catch(err){
+    setStatus(
+      'שגיאה בטעינת ההקלטות.\n' +
+      'ייתכן שזו חסימת CORS של שרת ימות המשיח, או בעיית רשת.\n' +
+      'פרטים טכניים: ' + err.message,
+      true
+    );
+    return;
+  }
+
+  if(data.responseStatus !== 'OK'){
+    setStatus('שגיאה מהשרת: ' + (data.message || data.responseStatus), true);
+    return;
+  }
+
+  let files = (data.files || []).filter(f => f.fileType === 'AUDIO' || f.fileType === 'TTS');
+
+  files.sort((a,b) => {
+    const na = parseInt((a.name || '').match(/\d+/), 10);
+    const nb = parseInt((b.name || '').match(/\d+/), 10);
+    if(!isNaN(na) && !isNaN(nb)) return na - nb;
+    return (a.name||'').localeCompare(b.name||'');
   });
 
-  load();
+  if(files.length > HIDE_LAST_N){
+    files = files.slice(0, files.length - HIDE_LAST_N);
+  } else {
+    files = [];
+  }
+
+  if(files.length === 0){
+    setStatus('אין הקלטות להצגה בשלוחה ' + ext + '.');
+    return;
+  }
+
+  listEl.innerHTML = '';
+  for(const file of files){
+    listEl.appendChild(buildRecItem(file, token, ext));
+  }
+  // פתיחה בסוף הרשימה - ההקלטה האחרונה תמיד גלויה
+  listEl.scrollTop = listEl.scrollHeight;
+}
+
+// ===== גל קול =====
+function getAudioCtx(){
+  if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  return audioCtx;
+}
+
+function pseudoWaveform(seedStr){
+  let seed = 0;
+  for(let i=0;i<seedStr.length;i++) seed = (seed*31 + seedStr.charCodeAt(i)) >>> 0;
+  const bars = [];
+  for(let i=0;i<BAR_COUNT;i++){
+    seed = (seed*1103515245 + 12345) >>> 0;
+    const v = ((seed >>> 8) % 1000)/1000;
+    // דפוס גלי מדומה, לא מחושב מהאודיו בפועל - שימוש רק כאשר קריאת הקובץ נחסמת (למשל CORS)
+    bars.push(0.18 + v*0.75);
+  }
+  return bars;
+}
+
+async function computeWaveform(url){
+  try{
+    const res = await fetch(url);
+    if(!res.ok) throw new Error('http ' + res.status);
+    const buf = await res.arrayBuffer();
+    const ctx = getAudioCtx();
+    const audioBuf = await ctx.decodeAudioData(buf.slice(0));
+    const raw = audioBuf.getChannelData(0);
+    const blockSize = Math.max(1, Math.floor(raw.length / BAR_COUNT));
+    const peaks = [];
+    for(let i=0;i<BAR_COUNT;i++){
+      let sum = 0;
+      const start = i*blockSize;
+      for(let j=0;j<blockSize;j++){ sum += Math.abs(raw[start+j] || 0); }
+      peaks.push(sum/blockSize);
+    }
+    const max = Math.max(...peaks, 0.0001);
+    return peaks.map(p => Math.max(0.12, p/max));
+  }catch(err){
+    return null;
+  }
+}
+
+const waveformObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if(entry.isIntersecting && entry.target._loadWaveform){
+      entry.target._loadWaveform();
+      entry.target._loadWaveform = null;
+      waveformObserver.unobserve(entry.target);
+    }
+  });
+}, {root: listEl, threshold: 0.15});
+
+function buildRecItem(file, token, ext){
+  const item = document.createElement('div');
+  item.className = 'rec-item';
+
+  const playBtn = document.createElement('button');
+  playBtn.className = 'play-btn';
+  playBtn.innerHTML = ICON_PLAY;
+  playBtn.setAttribute('aria-label', 'נגן');
+
+  const info = document.createElement('div');
+  info.className = 'rec-info';
+
+  const top = document.createElement('div');
+  top.className = 'rec-top';
+  const name = document.createElement('span');
+  name.className = 'rec-name';
+  name.textContent = file.name || '(ללא שם)';
+  top.appendChild(name);
+
+  const phoneInfo = parsePhoneAndDate(file.name);
+  const fallbackPhone = phoneInfo ? null : extractPhoneFallback(file);
+  const matchedPhone = phoneInfo ? phoneInfo.phone : fallbackPhone;
+  const contact = matchedPhone ? findContactByPhone(matchedPhone) : null;
+  const genericDate = extractDateLabel(file);
+
+  if(contact){
+    name.textContent = contact.name;
+    name.classList.add('contact-matched');
+    const dateOnly = phoneInfo ? phoneInfo.date : genericDate;
+    if(dateOnly){
+      const metaEl = document.createElement('span');
+      metaEl.className = 'rec-meta';
+      metaEl.textContent = dateOnly;
+      top.appendChild(metaEl);
+    }
+  } else if(phoneInfo || fallbackPhone || genericDate){
+    const metaEl = document.createElement('span');
+    metaEl.className = 'rec-meta';
+    metaEl.textContent = phoneInfo
+      ? (phoneInfo.phone + ' · ' + phoneInfo.date)
+      : fallbackPhone
+        ? (genericDate ? (fallbackPhone + ' · ' + genericDate) : fallbackPhone)
+        : genericDate;
+    top.appendChild(metaEl);
+  }
+  info.appendChild(top);
+
+  const waveRow = document.createElement('div');
+  waveRow.className = 'rec-wave-row';
+
+  const waveform = document.createElement('div');
+  waveform.className = 'waveform';
+  waveform.tabIndex = 0;
+  const bars = [];
+  const initialPeaks = pseudoWaveform(file.name || String(Math.random()));
+  initialPeaks.forEach(p => {
+    const bar = document.createElement('div');
+    bar.className = 'wf-bar';
+    bar.style.height = Math.round(p*28) + 'px';
+    waveform.appendChild(bar);
+    bars.push(bar);
+  });
+
+  function setPeaks(peaks){
+    peaks.forEach((p,i) => { if(bars[i]) bars[i].style.height = Math.round(p*28) + 'px'; });
+  }
+  function setPlayedRatio(ratio){
+    ratio = Math.max(0, Math.min(1, ratio || 0));
+    const exact = ratio * BAR_COUNT;
+    const cut = Math.floor(exact);
+    const frac = exact - cut; // התקדמות חלקית בתוך הפס הנוכחי, למעבר חלק בלי קפיצות
+    bars.forEach((b,i) => {
+      if(i < cut){
+        b.classList.add('played');
+        b.style.background = '';
+      } else if(i === cut && frac > 0){
+        b.classList.remove('played');
+        const pct = (frac*100).toFixed(1) + '%';
+        b.style.background = 'linear-gradient(to left, var(--accent) ' + pct + ', #DDE0E6 ' + pct + ')';
+      } else {
+        b.classList.remove('played');
+        b.style.background = '';
+      }
+    });
+  }
+
+  const timeLabel = document.createElement('span');
+  timeLabel.className = 'rec-time';
+  timeLabel.textContent = '0:00';
+
+  waveRow.appendChild(waveform);
+  waveRow.appendChild(timeLabel);
+  info.appendChild(waveRow);
+
+  const deleteBtn = document.createElement('button');
+  deleteBtn.className = 'delete-btn';
+  deleteBtn.innerHTML = ICON_TRASH;
+  deleteBtn.setAttribute('aria-label', 'מחיקת הקלטה');
+
+  const avatar = document.createElement('div');
+  avatar.className = 'rec-avatar';
+  avatar.innerHTML = contactAvatarHTML(contact);
+
+  item.appendChild(avatar);
+  item.appendChild(playBtn);
+  item.appendChild(info);
+  item.appendChild(deleteBtn);
+
+  const src = BASE_URL + 'DownloadFile?token=' + encodeURIComponent(token) +
+              '&path=' + encodeURIComponent(extPath(ext) + file.name);
+
+  // טעינת גל קול אמיתי כאשר הפריט נכנס לתצוגה. אם הקריאה נחסמת (למשל CORS)
+  // נשאר הדפוס המדומה שכבר מוצג, כדי שהתצוגה תמיד תיראה כמו הודעה קולית.
+  item._loadWaveform = async () => {
+    const peaks = await computeWaveform(src);
+    if(peaks) setPeaks(peaks);
+  };
+  waveformObserver.observe(item);
+
+  let audio = null;
+  let waveRafId = null;
+
+  // עדכון הגל הרץ בכל פריים (במקום להסתמך רק על אירוע timeupdate הדליל),
+  // כדי שהמילוי יתקדם בצורה חלקה במקום לקפוץ כמה פסים בבת אחת.
+  function stepWaveform(){
+    if(!audio || audio.paused) { waveRafId = null; return; }
+    setPlayedRatio(audio.duration ? audio.currentTime/audio.duration : 0);
+    waveRafId = requestAnimationFrame(stepWaveform);
+  }
+
+  function ensureAudio(){
+    if(audio) return audio;
+    audio = new Audio(src);
+    audio.preload = 'none';
+    audio.addEventListener('loadedmetadata', () => { if(audio.paused) timeLabel.textContent = fmtTime(audio.duration); });
+    audio.addEventListener('timeupdate', () => {
+      timeLabel.textContent = fmtTime(audio.currentTime);
+    });
+    audio.addEventListener('ended', () => {
+      playBtn.innerHTML = ICON_PLAY;
+      setPlayedRatio(0);
+      timeLabel.textContent = fmtTime(audio.duration);
+    });
+    return audio;
+  }
+
+  playBtn.onclick = () => {
+    ensureAudio();
+    if(activeAudio && activeAudio !== audio){
+      activeAudio.pause();
+      if(activePlayBtn) activePlayBtn.innerHTML = ICON_PLAY;
+      if(activeSetPlayed) activeSetPlayed(0);
+    }
+    if(audio.paused){
+      audio.play();
+      playBtn.innerHTML = ICON_PAUSE;
+      activeAudio = audio;
+      activePlayBtn = playBtn;
+      activeSetPlayed = setPlayedRatio;
+      if(waveRafId === null) waveRafId = requestAnimationFrame(stepWaveform);
+    } else {
+      audio.pause();
+      playBtn.innerHTML = ICON_PLAY;
+    }
+  };
+
+  waveform.onclick = (e) => {
+    ensureAudio();
+    if(!audio.duration) return;
+    const rect = waveform.getBoundingClientRect();
+    const ratio = (e.clientX - rect.left) / rect.width;
+    audio.currentTime = ratio * audio.duration;
+    setPlayedRatio(ratio);
+  };
+
+  deleteBtn.onclick = async () => {
+    const ok = confirm('למחוק את ההקלטה "' + (file.name || '') + '"? הפעולה אינה הפיכה.');
+    if(!ok) return;
+    deleteBtn.disabled = true;
+    const delUrl = BASE_URL + 'FileAction?token=' + encodeURIComponent(token) +
+                   '&action=delete&what=' + encodeURIComponent(extPath(ext) + file.name);
+    try{
+      const res = await fetch(delUrl);
+      const data = await res.json();
+      if(data.responseStatus === 'OK'){
+        if(activeAudio === audio){ activeAudio = null; activePlayBtn = null; activeSetPlayed = null; }
+        item.remove();
+      } else {
+        alert('שגיאה במחיקה: ' + (data.message || data.responseStatus));
+        deleteBtn.disabled = false;
+      }
+    }catch(err){
+      alert('שגיאה במחיקה (ייתכן חסימת CORS): ' + err.message);
+      deleteBtn.disabled = false;
+    }
+  };
+
+  return item;
+}
+
+const micBtn = document.getElementById('micBtn');
+const recTimer = document.getElementById('recTimer');
+const recTimerText = document.getElementById('recTimerText');
+const placeholderText = document.getElementById('placeholderText');
+const uploadBtn = document.getElementById('uploadBtn');
+const fileInput = document.getElementById('fileInput');
+
+let mediaRecorder = null;
+let recordedChunks = [];
+let recordStartTime = 0;
+let recordTimerInterval = null;
+let isRecording = false;
+
+micBtn.onclick = async () => {
+  if(!isRecording){
+    await startRecording();
+  } else {
+    stopRecording();
+  }
+};
+
+async function startRecording(){
+  if(!getToken()){
+    alert('נא להזין טוקן בהגדרות לפני הקלטה');
+    return;
+  }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+    recordedChunks = [];
+    mediaRecorder = new MediaRecorder(stream);
+    mediaRecorder.ondataavailable = e => { if(e.data.size > 0) recordedChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      const blob = new Blob(recordedChunks, {type: mediaRecorder.mimeType || 'audio/webm'});
+      uploadRecording(blob);
+    };
+    mediaRecorder.start();
+    isRecording = true;
+    micBtn.classList.add('recording');
+    micBtn.innerHTML = ICON_STOP;
+    placeholderText.style.display = 'none';
+    recTimer.style.display = 'flex';
+    recordStartTime = Date.now();
+    recordTimerInterval = setInterval(() => {
+      const secs = Math.floor((Date.now()-recordStartTime)/1000);
+      const mm = String(Math.floor(secs/60)).padStart(2,'0');
+      const ss = String(secs%60).padStart(2,'0');
+      recTimerText.textContent = mm+':'+ss;
+    }, 250);
+  }catch(err){
+    alert('לא ניתן לגשת למיקרופון: ' + err.message);
+  }
+}
+
+function stopRecording(){
+  if(mediaRecorder && isRecording){
+    mediaRecorder.stop();
+  }
+  isRecording = false;
+  micBtn.classList.remove('recording');
+  micBtn.innerHTML = ICON_MIC;
+  placeholderText.style.display = 'block';
+  recTimer.style.display = 'none';
+  clearInterval(recordTimerInterval);
+}
+
+uploadBtn.onclick = () => fileInput.click();
+fileInput.onchange = () => {
+  if(fileInput.files && fileInput.files[0]){
+    uploadRecording(fileInput.files[0]);
+    fileInput.value = '';
+  }
+};
+
+async function uploadRecording(blob){
+  const token = getToken();
+  const ext = getExt();
+  if(!token){ alert('נא להזין טוקן בהגדרות'); return; }
+
+  if(listEl.querySelector('.status-line')) listEl.innerHTML = '';
+
+  const item = document.createElement('div');
+  item.className = 'rec-item pending';
+  const statusText = document.createElement('span');
+  statusText.className = 'status-text';
+  statusText.textContent = 'שולח הקלטה חדשה…';
+  item.appendChild(statusText);
+  listEl.appendChild(item);
+  listEl.scrollTop = listEl.scrollHeight;
+
+  const guessedExt = (blob.type && blob.type.includes('wav')) ? 'wav'
+                    : (blob.type && blob.type.includes('mp3')) ? 'mp3'
+                    : 'webm';
+
+  const form = new FormData();
+  form.append('token', token);
+  form.append('path', extPath(ext));
+  form.append('convertAudio', '1');
+  form.append('autoNumbering', 'true');
+  form.append('file', blob, 'recording.' + guessedExt);
+
+  try{
+    const res = await fetch(BASE_URL + 'UploadFile', {method:'POST', body: form});
+    const data = await res.json();
+    if(data.responseStatus === 'OK'){
+      statusText.innerHTML = ICON_CHECK + ' נשלח בהצלחה';
+      statusText.style.display = 'flex';
+      statusText.style.alignItems = 'center';
+      statusText.style.gap = '6px';
+      sendTzintuk();
+      loadRecordings();
+    } else {
+      item.classList.add('error-item');
+      statusText.className = 'status-text error';
+      statusText.textContent = 'שגיאה בהעלאה: ' + (data.message || data.responseStatus);
+    }
+  }catch(err){
+    item.classList.add('error-item');
+    statusText.className = 'status-text error';
+    statusText.textContent = 'שגיאה בהעלאה (ייתכן חסימת CORS): ' + err.message;
+  }
+}
+
+if(!getToken()){
+  openSettings();
+} else {
+  fetchContactsFromServer().then(loadRecordings);
+}
 </script>
 </body>
 </html>
