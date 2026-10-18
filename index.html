@@ -104,6 +104,24 @@ mark{background:color-mix(in srgb,#F5C84B 50%,transparent);color:inherit;border-
 .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,16px);background:var(--ink);color:var(--bg);padding:11px 22px;border-radius:12px;font-weight:700;font-size:14.5px;opacity:0;pointer-events:none;transition:all .25s;z-index:200}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
+/* preview */
+.pv{padding:20px}
+.pvbox{width:min(1200px,100%);height:min(90vh,100%);background:var(--surface);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;transform:translateY(12px);transition:transform .25s}
+.pv.open .pvbox{transform:none}
+.pvbar{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);background:var(--side)}
+.pvbar .t{flex:1;min-width:0}
+.pvbar .t b{display:block;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pvbar .t span{display:block;font-size:12.5px;color:var(--muted);direction:ltr;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pvbar .btn{height:36px}.pvbar .btn.icon{width:36px}
+.pvhint{padding:6px 14px;font-size:12.5px;color:var(--muted);background:var(--soft);border-bottom:1px solid var(--line)}
+.pvbody{position:relative;flex:1;background:#fff}
+.pvbody iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.pvload{position:absolute;inset:0;display:grid;place-items:center;background:var(--surface)}
+.pvload i{width:30px;height:30px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:rot .7s linear infinite}
+.pvload.done{display:none}
+.prev{position:relative;z-index:2;width:34px;height:34px;border:0;border-radius:8px;background:transparent;color:var(--muted);display:grid;place-items:center}
+.prev:hover{background:var(--tile);color:var(--accent)}
+@media(max-width:640px){.pv{padding:0}.pvbox{height:100%;border-radius:0;border:0}.pvbar .btn.open span{display:none}.pvbar .btn.open{width:36px;padding:0}}
 @media(max-width:900px){
 .app{grid-template-columns:1fr}
 #side{position:fixed;inset:0 auto 0 0;right:0;left:auto;width:280px;z-index:90;transform:translateX(100%);transition:transform .25s;box-shadow:0 0 40px rgba(0,0,0,.25)}
@@ -147,6 +165,18 @@ body.menu .scrim{display:block;position:fixed;inset:0;background:rgba(10,12,16,.
       <div class="head"><h1 id="title">כל האתרים</h1><p id="count" aria-live="polite"></p></div>
       <div class="table"><div class="cols thead"><span>אתר</span><span>קטגוריה</span><span>תיאור</span><span></span></div><div id="out"><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
     </main>
+  </div>
+</div>
+
+<div class="ov pv" id="pv">
+  <div class="pvbox" role="dialog" aria-modal="true" aria-labelledby="pvName">
+    <div class="pvbar">
+      <div class="t"><b id="pvName"></b><span id="pvDom"></span></div>
+      <a class="btn open" id="pvOpen" href="#" target="_blank" rel="noopener noreferrer"><svg class="ico" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg><span>פתיחה בלשונית חדשה</span></a>
+      <button class="btn icon" id="pvClose" aria-label="סגירת התצוגה המקדימה"><svg class="ico" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="pvhint">חלק מהאתרים חוסמים הטמעה. אם הדף ריק, השתמשו בפתיחה בלשונית חדשה.</div>
+    <div class="pvbody"><div class="pvload" id="pvLoad"><i></i></div><iframe id="pvFrame" title="תצוגה מקדימה" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"></iframe></div>
   </div>
 </div>
 
@@ -234,7 +264,7 @@ function row(s){
       <div class="sinfo"><h3 class="name"><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${hl(s.name)}</a></h3><span class="dom">${esc(h)}</span></div></div>
     <span class="tag">${esc(s.category)}</span>
     <p class="desc">${hl(s.desc || '')}</p>
-    <div class="acts"><button type="button" class="fav${on ? ' on' : ''}" data-url="${esc(s.url)}" aria-pressed="${on}" aria-label="הוספה או הסרה ממועדפים"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/></svg></button><svg class="ico go" viewBox="0 0 24 24"><path d="M17 17L7 7M7 17V7h10"/></svg></div>
+    <div class="acts"><button type="button" class="prev" data-url="${esc(s.url)}" data-name="${esc(s.name)}" aria-label="תצוגה מקדימה של ${esc(s.name)}" title="תצוגה מקדימה"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6.5h.01M10 6.5h.01"/></svg></button><button type="button" class="fav${on ? ' on' : ''}" data-url="${esc(s.url)}" aria-pressed="${on}" aria-label="הוספה או הסרה ממועדפים"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/></svg></button><svg class="ico go" viewBox="0 0 24 24"><path d="M17 17L7 7M7 17V7h10"/></svg></div>
   </article>`;
 }
 function render(){
@@ -327,6 +357,21 @@ $('form').addEventListener('submit', async e => {
 
 $('menuBtn').onclick = () => document.body.classList.add('menu');
 $('scrim').onclick = () => document.body.classList.remove('menu');
+/* preview */
+function openPreview(url, name){
+  $('pvName').textContent = name; $('pvDom').textContent = hostOf(url); $('pvOpen').href = url;
+  $('pvLoad').classList.remove('done'); $('pvFrame').src = url;
+  $('pv').classList.add('open'); document.documentElement.style.overflow = 'hidden'; $('pvClose').focus();
+}
+function closePreview(){
+  $('pv').classList.remove('open'); document.documentElement.style.overflow = '';
+  setTimeout(() => { if(!$('pv').classList.contains('open')) $('pvFrame').src = 'about:blank'; }, 250);
+}
+$('out').addEventListener('click', e => { const b = e.target.closest('.prev'); if(b) openPreview(b.dataset.url, b.dataset.name); });
+$('pvFrame').addEventListener('load', () => { if($('pvFrame').src !== 'about:blank') $('pvLoad').classList.add('done'); });
+$('pvClose').onclick = closePreview;
+$('pv').addEventListener('click', e => { if(e.target === $('pv')) closePreview(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('pv').classList.contains('open')) closePreview(); });
 /* boot */
 try{ const c = localStorage.getItem('nl-csv'); if(c) ingest(c); }catch(e){}
 load();
