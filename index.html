@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>try{var t=localStorage.getItem("nl-theme");if(t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.classList.add("dark")}catch(e){}</script>
 <style>
   :root {
     /* צבעים בהירים - מודרניים ורכים */
@@ -321,6 +322,57 @@
     main { padding: 12px 16px 80px; }
     .grid { grid-template-columns: 1fr; gap: 16px; }
   }
+
+  /* ---------- Upgrade layer ---------- */
+  html{scrollbar-gutter:stable;scroll-behavior:smooth}
+  ::selection{background:var(--accent);color:#fff}
+  *{scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
+  body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(600px 400px at 85% -5%,color-mix(in srgb,var(--accent) 16%,transparent),transparent 70%),
+    radial-gradient(500px 380px at 5% 10%,color-mix(in srgb,var(--accent-2) 12%,transparent),transparent 70%)}
+  .chip-nav-wrap{position:relative;top:auto}
+  .category-section{scroll-margin-top:calc(var(--hh,150px) + 12px)}
+  .search-wrap input{padding-left:56px;height:46px}
+  .kbd{position:absolute;left:16px;top:50%;transform:translateY(-50%);font:600 12px 'Assistant',sans-serif;color:var(--text-muted);
+    border:1px solid var(--border);border-bottom-width:2px;border-radius:6px;padding:1px 8px;background:var(--surface);pointer-events:none}
+  @media (hover:none){.kbd{display:none}}
+  .hero{max-width:1200px;margin:0 auto;padding:56px 24px 8px;text-align:center}
+  .hero h1{margin:0 0 14px;font-size:clamp(30px,5.2vw,54px);font-weight:800;letter-spacing:-.03em;line-height:1.15}
+  .hero h1 span{background:linear-gradient(90deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p{margin:0;color:var(--text-muted);font-size:17px}
+  .hero-stats{display:inline-flex;margin-top:22px!important;padding:7px 18px;border-radius:100px;border:1px solid var(--border);background:var(--surface);font-size:14px!important;font-weight:600;min-height:34px}
+  .results-meta{min-height:22px;margin-top:14px;font-size:14px;color:var(--text-muted);font-weight:600}
+  mark{background:color-mix(in srgb,var(--accent) 22%,transparent);color:inherit;border-radius:4px;padding:0 2px}
+  .card{position:relative;overflow:hidden;animation-delay:calc(var(--i,0)*35ms)}
+  .card:hover{transform:translateY(-4px);border-color:color-mix(in srgb,var(--c,var(--accent)) 55%,var(--border));box-shadow:0 18px 36px -12px color-mix(in srgb,var(--c,var(--accent)) 35%,transparent)}
+  .card::before{content:'';position:absolute;inset-inline:0;top:0;height:3px;background:var(--c);transform:scaleX(0);transform-origin:center;transition:transform .35s ease}
+  .card:hover::before,.card:focus-within::before{transform:scaleX(1)}
+  .card-link::after{content:'';position:absolute;inset:0;z-index:1}
+  .card-meta{min-width:0;padding-inline-end:30px;display:flex;flex-direction:column;gap:2px}
+  h3.card-name{margin:0;font-size:17px}
+  .card-domain{font-size:12.5px;color:var(--text-muted);direction:ltr;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .card-logo-fallback{background:color-mix(in srgb,var(--c,var(--accent)) 14%,var(--surface));color:var(--c,var(--accent))}
+  .fav-btn{position:absolute;top:14px;inset-inline-end:14px;z-index:2;width:34px;height:34px;border-radius:50%;border:1px solid transparent;background:transparent;
+    color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:all .2s ease}
+  .card:hover .fav-btn,.fav-btn:focus-visible,.fav-btn.on{opacity:1}
+  @media (hover:none){.fav-btn{opacity:1}}
+  .fav-btn:hover{background:var(--surface-2);color:#F59E0B}
+  .fav-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
+  .fav-btn.on{color:#F59E0B}.fav-btn.on svg{fill:currentColor}
+  .category-heading .count{font-size:13px;font-weight:700;color:var(--text-muted);background:var(--surface-2);border-radius:100px;padding:2px 10px}
+  .toast{position:fixed;bottom:28px;left:50%;transform:translate(-50%,20px);background:var(--text);color:var(--bg);padding:11px 22px;border-radius:100px;
+    font-size:14.5px;font-weight:700;opacity:0;pointer-events:none;transition:all .3s ease;z-index:200;box-shadow:var(--shadow)}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+  .to-top{position:fixed;bottom:24px;inset-inline-start:24px;width:46px;height:46px;border-radius:50%;border:1px solid var(--border);background:var(--surface);
+    color:var(--text);display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:var(--shadow);z-index:60;opacity:0;transform:translateY(12px);pointer-events:none;transition:all .25s ease}
+  .to-top.show{opacity:1;transform:none;pointer-events:auto}
+  .to-top:hover{border-color:var(--accent);color:var(--accent)}
+  .field-error{margin-top:6px;font-size:13px;font-weight:600;color:#EF4444}
+  .field.bad input{border-color:#EF4444}
+  .modal-overlay:not(.open){pointer-events:none}
+  @media (max-width:640px){.hero{padding-top:36px}.to-top{bottom:16px;inset-inline-start:16px}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.card{opacity:1!important}}
 </style>
 </head>
 <body>
@@ -339,7 +391,7 @@
     </div>
     <div class="header-controls">
       <div class="search-wrap">
-        <input id="searchInput" type="text" placeholder="חיפוש אתר...">
+        <span class="kbd">/</span><input id="searchInput" type="text" autocomplete="off" aria-label="חיפוש אתר" placeholder="חיפוש אתר, קטגוריה או תיאור...">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
@@ -376,7 +428,7 @@
       </button>
     </div>
     <p class="modal-lead">ההצעה נשלחת לבדיקה ותתווסף לדף לאחר אישור המערכת.</p>
-    <form id="suggestForm">
+    <form id="suggestForm" novalidate>
       <div class="field">
         <label for="s-name">שם האתר <span class="req">*</span></label>
         <input id="s-name" type="text" required placeholder="לדוגמה: ויקיפדיה">
@@ -415,12 +467,22 @@
   </div>
 </div>
 
+<section class="hero">
+  <h1>כל האתרים הטובים, <span>במקום אחד</span></h1>
+  <p>חפשו, סננו לפי קטגוריה ושמרו מועדפים לגישה מהירה.</p>
+  <p class="hero-stats" id="heroStats"></p>
+  <div class="results-meta" id="resultsMeta" aria-live="polite"></div>
+</section>
+
 <main id="main">
   <div class="skeleton-grid" id="skeleton">
     <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
     <div class="skeleton-card"></div><div class="skeleton-card"></div><div class="skeleton-card"></div>
   </div>
 </main>
+
+<div class="toast" id="toast" role="status"></div>
+<button class="to-top" id="toTop" aria-label="חזרה למעלה"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
 
 <script>
   // ===== קישור ה-CSV של הגיליון (טור: קישור, שם האתר, תיאור, לוגו, קטגוריה) =====
@@ -492,9 +554,8 @@
 
   // ---------- Theme ----------
   const themeBtn = document.getElementById('themeBtn');
-  let isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  applyTheme();
-  themeBtn.addEventListener('click', () => { isDark = !isDark; applyTheme(); });
+  let isDark = document.documentElement.classList.contains('dark');
+  themeBtn.addEventListener('click', () => { isDark = !isDark; applyTheme(); try{localStorage.setItem('nl-theme', isDark?'dark':'light')}catch(e){} });
   function applyTheme(){ document.documentElement.classList.toggle('dark', isDark); }
 
   // ---------- CSV Parser ----------
@@ -533,24 +594,66 @@
   }
 
   // ---------- Fetch & Render ----------
-  let allSites = [];
+  let allSites = [], query = '', hlRe = null;
+  let favs = new Set();
+  try{ favs = new Set(JSON.parse(localStorage.getItem('nl-favs') || '[]')); }catch(e){}
+  const STAR = '<svg viewBox="0 0 24 24"><path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/></svg>';
+  const fold = t => String(t).toLowerCase().replace(/[\u0591-\u05C7]/g,'').trim();
+  function hostOf(u){ try{ return new URL(u).hostname.replace(/^www\./,''); }catch(e){ return ''; } }
+  function safeUrl(u){ try{ const x = new URL(/^https?:\/\//i.test(u) ? u : 'https://' + u); return /^https?:$/.test(x.protocol) ? x.href : ''; }catch(e){ return ''; } }
+  function hl(t){ return hlRe ? t.split(hlRe).map((p,i) => i % 2 ? '<mark>' + escapeHtml(p) + '</mark>' : escapeHtml(p)).join('') : escapeHtml(t); }
+  function ingest(text){
+    allSites = parseCSV(text).map(r => ({
+      url: safeUrl(norm(r, ['קישור','URL','קישור לאתר'])),
+      name: norm(r, ['שם האתר','שם']),
+      desc: norm(r, ['תיאור']),
+      logo: norm(r, ['לוגו','קישור ללוגו']),
+      category: norm(r, ['קטגוריה']) || 'כללי'
+    })).filter(s => s.url && s.name);
+    document.getElementById('heroStats').textContent = allSites.length + ' אתרים ב-' + new Set(allSites.map(s => s.category)).size + ' קטגוריות';
+    applyFilter();
+  }
+  function applyFilter(){
+    const terms = fold(query).split(/\s+/).filter(Boolean);
+    hlRe = terms.length ? new RegExp('(' + terms.map(x => x.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|') + ')', 'gi') : null;
+    const f = terms.length ? allSites.filter(s => { const h = fold([s.name, s.desc, s.category, hostOf(s.url)].join(' ')); return terms.every(x => h.includes(x)); }) : allSites;
+    document.getElementById('resultsMeta').textContent = terms.length ? 'נמצאו ' + f.length + ' מתוך ' + allSites.length + ' אתרים. Enter לפתיחת התוצאה הראשונה.' : '';
+    render(f);
+  }
+  function favInner(){
+    const list = allSites.filter(s => favs.has(s.url));
+    if(query.trim() || !list.length) return '';
+    return `<section class="category-section" id="cat-favs"><div class="category-heading"><span class="dot" style="background:#F59E0B"></span><h2>המועדפים שלי</h2><span class="count">${list.length}</span><span class="line"></span></div><div class="grid">${list.map(cardHtml).join('')}</div></section>`;
+  }
+  function toast(m){ const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toast.t); toast.t = setTimeout(() => t.classList.remove('show'), 1800); }
+  mainEl.addEventListener('click', e => {
+    const b = e.target.closest('.fav-btn'); if(!b) return;
+    const u = b.dataset.url, on = !favs.has(u);
+    on ? favs.add(u) : favs.delete(u);
+    try{ localStorage.setItem('nl-favs', JSON.stringify([...favs])); }catch(err){}
+    mainEl.querySelectorAll('.fav-btn').forEach(x => { if(x.dataset.url === u){ x.classList.toggle('on', on); x.setAttribute('aria-pressed', on); } });
+    const w = document.getElementById('favWrap'), h0 = w.offsetHeight;
+    w.innerHTML = favInner();
+    window.scrollBy(0, w.offsetHeight - h0);
+    toast(on ? 'נוסף למועדפים' : 'הוסר מהמועדפים');
+  });
+  document.addEventListener('error', e => {
+    const t = e.target; if(!t.classList || !t.classList.contains('card-logo')) return;
+    const fb = 'https://www.google.com/s2/favicons?sz=128&domain=' + t.dataset.host;
+    if(t.dataset.host && !t.dataset.fb && t.src !== fb){ t.dataset.fb = 1; t.src = fb; return; }
+    const d = document.createElement('div'); d.className = 'card-logo-fallback'; d.textContent = t.dataset.ini; t.replaceWith(d);
+  }, true);
 
   async function load(){
     try{
       const res = await fetch(SHEET_CSV_URL);
       if(!res.ok) throw new Error('bad status');
       const text = await res.text();
-      const rows = parseCSV(text);
-      allSites = rows.map(r => ({
-        url: norm(r, ['קישור','URL','קישור לאתר']),
-        name: norm(r, ['שם האתר','שם']),
-        desc: norm(r, ['תיאור']),
-        logo: norm(r, ['לוגו','קישור ללוגו']),
-        category: norm(r, ['קטגוריה']) || 'כללי'
-      })).filter(s => s.url && s.name);
-      render(allSites);
+      let prev = null; try{ prev = localStorage.getItem('nl-csv'); localStorage.setItem('nl-csv', text); }catch(e){}
+      if(text === prev && allSites.length) return;
+      ingest(text);
     }catch(err){
-      renderError();
+      if(!allSites.length) renderError();
     }
   }
 
@@ -570,8 +673,7 @@
     if(!sites.length){
       mainEl.innerHTML = `
         <div class="state-box">
-          <h3>עדיין לא נוספו אתרים</h3>
-          <p>הוסיפו שורה בגיליון עם קישור, שם, תיאור, לוגו וקטגוריה — והדף יתעדכן.</p>
+          ${query.trim() ? '<h3>לא נמצאו תוצאות</h3><p>נסו מילות חיפוש אחרות, או הציעו את האתר שחסר לכם.</p>' : '<h3>עדיין לא נוספו אתרים</h3><p>הוסיפו שורה בגיליון עם קישור, שם, תיאור, לוגו וקטגוריה, והדף יתעדכן.</p>'}
         </div>`;
       chipNav.innerHTML = '';
       chipArrowStart.classList.remove('show');
@@ -584,11 +686,11 @@
     chipNav.innerHTML = `<button class="chip active" data-cat="all">הכל</button>` +
       categories.map(c => `<button class="chip" data-cat="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
 
-    mainEl.innerHTML = categories.map(cat => {
+    mainEl.innerHTML = '<div id="favWrap">' + favInner() + '</div>' + categories.map(cat => {
       const catSites = sites.filter(s => s.category === cat);
       return `
         <section class="category-section" id="cat-${slug(cat)}">
-          <div class="category-heading"><span class="dot" style="background:${categoryColor(cat)}"></span><h2>${escapeHtml(cat)}</h2><span class="line"></span></div>
+          <div class="category-heading"><span class="dot" style="background:${categoryColor(cat)}"></span><h2>${escapeHtml(cat)}</h2><span class="count">${catSites.length}</span><span class="line"></span></div>
           <div class="grid">
             ${catSites.map(cardHtml).join('')}
           </div>
@@ -611,19 +713,21 @@
     updateChipArrows();
   }
 
-  function cardHtml(s){
-    const initials = escapeHtml((s.name || '?').trim().charAt(0));
+  function cardHtml(s, i){
+    const c = categoryColor(s.category), h = hostOf(s.url), fav = favs.has(s.url), ini = escapeAttr(s.name.trim().charAt(0));
+    const src = s.logo || (h ? 'https://www.google.com/s2/favicons?sz=128&domain=' + h : '');
     return `
-      <a class="card" href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer">
+      <article class="card" style="--c:${c};--i:${Math.min(i || 0, 14)}">
         <div class="card-top">
-          ${s.logo
-            ? `<img class="card-logo" src="${escapeAttr(s.logo)}" alt="" loading="lazy"
-                 onerror="this.outerHTML='<div class=&quot;card-logo-fallback&quot;>${initials}</div>'">`
-            : `<div class="card-logo-fallback">${initials}</div>`}
-          <div class="card-name">${escapeHtml(s.name)}</div>
+          ${src ? `<img class="card-logo" src="${escapeAttr(src)}" data-ini="${ini}" data-host="${escapeAttr(h)}" alt="" loading="lazy">` : `<div class="card-logo-fallback">${ini}</div>`}
+          <div class="card-meta">
+            <h3 class="card-name"><a class="card-link" href="${escapeAttr(s.url)}" target="_blank" rel="noopener noreferrer">${hl(s.name)}</a></h3>
+            <span class="card-domain">${escapeHtml(h)}</span>
+          </div>
         </div>
-        ${s.desc ? `<p class="card-desc">${escapeHtml(s.desc)}</p>` : ''}
-      </a>`;
+        ${s.desc ? `<p class="card-desc">${hl(s.desc)}</p>` : ''}
+        <button type="button" class="fav-btn${fav ? ' on' : ''}" data-url="${escapeAttr(s.url)}" aria-pressed="${fav}" aria-label="הוספה או הסרה ממועדפים">${STAR}</button>
+      </article>`;
   }
 
   function setupScrollSpy(categories){
@@ -643,13 +747,15 @@
   }
 
   // ---------- Search ----------
-  document.getElementById('searchInput').addEventListener('input', (e) => {
-    const q = e.target.value.trim().toLowerCase();
-    if(!q){ render(allSites); return; }
-    const filtered = allSites.filter(s =>
-      s.name.toLowerCase().includes(q) || (s.desc && s.desc.toLowerCase().includes(q))
-    );
-    render(filtered);
+  const si = document.getElementById('searchInput'); let st;
+  si.addEventListener('input', () => { clearTimeout(st); st = setTimeout(() => { query = si.value; applyFilter(); }, 120); });
+  si.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){ si.value = ''; query = ''; applyFilter(); }
+    if(e.key === 'Enter'){ const a = mainEl.querySelector('.card-link'); if(a) a.click(); }
+  });
+  document.addEventListener('keydown', e => {
+    const typing = /INPUT|TEXTAREA/.test(document.activeElement.tagName);
+    if((e.key === '/' && !typing) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')){ e.preventDefault(); si.focus(); si.select(); }
   });
 
   function slug(str){ return str.replace(/[^\p{L}\p{N}]+/gu, '-'); }
@@ -667,16 +773,22 @@
   const suggestSuccess = document.getElementById('suggestSuccess');
   const suggestError = document.getElementById('suggestError');
 
+  function setErr(id, msg){
+    const f = document.getElementById(id).closest('.field'); let e = f.querySelector('.field-error');
+    if(!msg){ if(e) e.remove(); f.classList.remove('bad'); return; }
+    if(!e){ e = document.createElement('div'); e.className = 'field-error'; f.appendChild(e); }
+    e.textContent = msg; f.classList.add('bad');
+  }
   function openModal(){ 
     modalOverlay.style.display = 'flex';
     // Timeout needed to allow display:flex to apply before adding the open class for the transition
-    setTimeout(() => modalOverlay.classList.add('open'), 10);
+    setTimeout(() => { modalOverlay.classList.add('open'); document.getElementById('s-name').focus(); }, 10);
     document.body.style.overflow = 'hidden'; 
   }
   function closeModal(){ 
     modalOverlay.classList.remove('open'); 
     setTimeout(() => modalOverlay.style.display = 'none', 300); // Wait for transition
-    document.body.style.overflow = ''; 
+    document.body.style.overflow = ''; suggestBtn.focus();
   }
 
   suggestBtn.addEventListener('click', openModal);
@@ -696,7 +808,11 @@
       logo: document.getElementById('s-logo').value.trim(),
       category: document.getElementById('s-cat').value.trim()
     };
-    if(!payload.name || !payload.url){ return; }
+    setErr('s-name', payload.name ? '' : 'נא להזין שם לאתר');
+    const u = safeUrl(payload.url);
+    setErr('s-url', u ? '' : 'נא להזין קישור תקין');
+    if(!payload.name || !u){ return; }
+    payload.url = u;
 
     suggestSubmitBtn.classList.add('loading');
     suggestSubmitBtn.disabled = true;
@@ -717,6 +833,12 @@
     }
   });
 
+  const hdr = document.querySelector('header');
+  new ResizeObserver(() => document.documentElement.style.setProperty('--hh', hdr.offsetHeight + 'px')).observe(hdr);
+  const toTop = document.getElementById('toTop');
+  window.addEventListener('scroll', () => toTop.classList.toggle('show', window.scrollY > 700), { passive: true });
+  toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  try{ const c = localStorage.getItem('nl-csv'); if(c) ingest(c); }catch(e){}
   load();
 </script>
   <script src="https://xnet2.github.io/status/xnet-badge.js"></script>
