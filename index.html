@@ -9,76 +9,74 @@
 <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script>try{var t=localStorage.getItem("nl-theme");if(t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches)document.documentElement.classList.add("dark")}catch(e){}</script>
 <style>
-:root{--bg:#F5F2EA;--surface:#FFFFFF;--ink:#1C1917;--muted:#6B6560;--line:#E4DFD3;--accent:#0F6B5C;--on-accent:#fff;--soft:#E3F0EC;--hover:#EFEBE0;--danger:#C0392B;--r:12px;color-scheme:light}
-html.dark{--bg:#121413;--surface:#1A1D1C;--ink:#ECEAE4;--muted:#9A9A92;--line:#2B2F2D;--accent:#4FB39E;--on-accent:#08201B;--soft:#17302A;--hover:#232826;--danger:#F0776B;color-scheme:dark}
+:root{--bg:#F4F5F7;--surface:#FFFFFF;--side:#F9FAFB;--ink:#1A1D23;--muted:#667085;--line:#E3E6EB;--accent:#2563EB;--on-accent:#fff;--soft:#EAF1FF;--hover:#F1F3F6;--tile:#EEF0F4;--danger:#D92D20;--r:10px;color-scheme:light}
+html.dark{--bg:#0F1115;--surface:#161A20;--side:#12151A;--ink:#E6E8EB;--muted:#8B93A0;--line:#262B33;--accent:#5B8DEF;--on-accent:#0B1220;--soft:#1B2640;--hover:#1D222A;--tile:#232932;--danger:#F97066;color-scheme:dark}
 *{box-sizing:border-box}
-html{scrollbar-gutter:stable;scrollbar-width:thin;scrollbar-color:var(--line) transparent}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Assistant',system-ui,sans-serif;font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
+html{scrollbar-width:thin;scrollbar-color:var(--line) transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Assistant',system-ui,sans-serif;font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;cursor:pointer}
 a{color:inherit;text-decoration:none}
-:focus-visible{outline:3px solid color-mix(in srgb,var(--accent) 55%,transparent);outline-offset:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 svg{flex-shrink:0}
-.ico{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-
-/* header */
-header{position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--line)}
-.bar{max-width:1180px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:16px}
-.brand{display:flex;align-items:center;gap:10px;font-size:25px;font-weight:800;letter-spacing:-.02em;flex-shrink:0}
-.brand i{width:36px;height:36px;border-radius:10px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
-.search{position:relative;flex:1;min-width:0}
-.search input{width:100%;height:48px;padding:0 48px 0 44px;border-radius:var(--r);border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;font-size:16px;outline:none;transition:border-color .15s,box-shadow .15s}
-.search input:focus{border-color:var(--accent);box-shadow:0 0 0 4px var(--soft)}
+.ico{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.app{display:grid;grid-template-columns:260px minmax(0,1fr);min-height:100vh}
+#side{position:sticky;top:0;height:100vh;overflow:auto;background:var(--side);border-inline-end:1px solid var(--line);padding:16px 12px;display:flex;flex-direction:column;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px;font-size:20px;font-weight:800;letter-spacing:-.01em}
+.brand i{width:32px;height:32px;border-radius:8px;background:var(--accent);color:var(--on-accent);display:grid;place-items:center}
+.side-title{margin:0 8px 6px;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.02em}
+nav{display:flex;flex-direction:column;gap:2px}
+.cat{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:8px 10px;border:0;border-radius:8px;background:transparent;text-align:right;font-weight:600;font-size:14.5px;color:var(--muted)}
+.cat:hover{background:var(--hover);color:var(--ink)}
+.cat.on{background:var(--soft);color:var(--accent)}
+.cat span:first-child{display:flex;align-items:center;gap:10px;min-width:0}
+.cat .n{font-size:12px;font-weight:700;background:var(--tile);color:var(--muted);border-radius:6px;padding:0 7px}
+.cat.on .n{background:var(--accent);color:var(--on-accent)}
+.sep{height:1px;background:var(--line);margin:6px 8px}
+.pane{min-width:0}
+.top{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;padding:12px 28px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.search{position:relative;flex:1;max-width:620px}
+.search input{width:100%;height:40px;padding:0 40px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
+.search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--soft)}
 .search input::placeholder{color:var(--muted)}
-.search .lead{position:absolute;right:15px;top:14px;color:var(--muted);pointer-events:none}
-.search .clear{position:absolute;left:8px;top:8px;width:32px;height:32px;border:0;border-radius:8px;background:transparent;color:var(--muted);display:none;place-items:center}
-.search.has .clear{display:grid}
-.search .clear:hover{background:var(--hover)}
-.btn{height:48px;padding:0 20px;border-radius:var(--r);border:1.5px solid var(--line);background:var(--surface);font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;transition:background .15s,border-color .15s}
+.search .lead{position:absolute;right:12px;top:11px;color:var(--muted);pointer-events:none}
+.search .clear{position:absolute;left:6px;top:6px;width:28px;height:28px;border:0;border-radius:6px;background:transparent;color:var(--muted);display:none;place-items:center}
+.search.has .clear{display:grid}.search .clear:hover{background:var(--hover)}
+.sp{flex:1}
+.btn{height:40px;padding:0 16px;border-radius:var(--r);border:1px solid var(--line);background:var(--surface);font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap;transition:background .15s}
 .btn:hover{background:var(--hover)}
 .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
-.btn.primary:hover{filter:brightness(1.08)}
-.btn.icon{width:48px;padding:0}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn.icon{width:40px;padding:0}
+#menuBtn{display:none}
 .theme .moon{display:none}html.dark .theme .sun{display:none}html.dark .theme .moon{display:block}
-
-/* layout */
-.wrap{max-width:1180px;margin:0 auto;padding:24px;display:grid;grid-template-columns:240px minmax(0,1fr);gap:32px;align-items:start}
-aside{position:sticky;top:calc(var(--hh,76px) + 20px);max-height:calc(100vh - var(--hh,76px) - 40px);overflow:auto}
-.side-title{font-size:13px;font-weight:700;color:var(--muted);margin:0 12px 8px}
-nav{display:flex;flex-direction:column;gap:2px}
-.cat{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;padding:10px 12px;border:0;border-radius:10px;background:transparent;text-align:right;font-weight:600;font-size:15.5px;color:var(--ink)}
-.cat:hover{background:var(--hover)}
-.cat.on{background:var(--accent);color:var(--on-accent)}
-.cat span:first-child{display:flex;align-items:center;gap:10px;min-width:0}
-.cat .n{font-size:13px;font-weight:700;opacity:.65}
-.sep{height:1px;background:var(--line);margin:8px 12px}
-
-.head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px;min-height:34px}
-.head h1{margin:0;font-size:26px;font-weight:800;letter-spacing:-.02em}
-.head p{margin:0;color:var(--muted);font-size:14.5px;font-weight:600}
-.group{margin-bottom:28px}
-.group h2{margin:0 0 10px;font-size:15px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:8px}
-.list{display:flex;flex-direction:column;gap:8px}
-.row{position:relative;display:flex;align-items:center;gap:14px;padding:12px 14px;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);transition:border-color .15s,background .15s}
-.row:hover{border-color:var(--accent);background:color-mix(in srgb,var(--soft) 45%,var(--surface))}
-.logo{width:46px;height:46px;border-radius:10px;object-fit:contain;background:#fff;border:1px solid var(--line);padding:3px;flex-shrink:0}
-.logo.fb{display:grid;place-items:center;font-weight:800;font-size:19px;color:#fff;border:0;padding:0}
-.info{flex:1;min-width:0}
-.name{margin:0;font-size:17px;font-weight:700;line-height:1.3}
-.name a::after{content:'';position:absolute;inset:0;z-index:1;border-radius:var(--r)}
-.dom{font-size:13px;color:var(--muted);direction:ltr;text-align:right;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.desc{margin:3px 0 0;font-size:14.5px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.go{color:var(--muted);transition:transform .15s,color .15s}
-.row:hover .go{color:var(--accent);transform:translateX(-3px)}
-.fav{position:relative;z-index:2;width:40px;height:40px;border:0;border-radius:10px;background:transparent;color:var(--muted);display:grid;place-items:center}
-.fav:hover{background:var(--hover);color:#D4900A}
-.fav.on{color:#D4900A}.fav.on .ico{fill:currentColor}
-mark{background:color-mix(in srgb,#F5C84B 55%,transparent);color:inherit;border-radius:3px;padding:0 1px}
-.state{text-align:center;padding:70px 20px;color:var(--muted)}
-.state h3{margin:0 0 8px;color:var(--ink);font-size:21px}
-.state .btn{margin-top:18px}
-.sk{height:74px;border-radius:var(--r);background:linear-gradient(90deg,var(--hover) 25%,var(--line) 50%,var(--hover) 75%);background-size:200% 100%;animation:sh 1.4s infinite;margin-bottom:8px}
+main{padding:24px 28px 60px;max-width:1100px}
+.head{display:flex;align-items:baseline;gap:12px;margin-bottom:16px}
+.head h1{margin:0;font-size:24px;font-weight:800;letter-spacing:-.02em}
+.head p{margin:0;color:var(--muted);font-weight:600;font-size:14px}
+.table{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cols{display:grid;grid-template-columns:minmax(220px,1.1fr) 140px minmax(0,2fr) 76px;gap:16px;padding:10px 16px}
+.thead{font-size:12px;font-weight:700;color:var(--muted);background:var(--side);border-bottom:1px solid var(--line)}
+.row{position:relative;align-items:center;border-bottom:1px solid var(--line);transition:background .12s}
+.row:last-child{border-bottom:0}
+.row:hover{background:var(--hover)}
+.site{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:36px;height:36px;border-radius:8px;object-fit:contain;background:#fff;border:1px solid var(--line);padding:3px}
+.logo.fb{display:grid;place-items:center;font-weight:800;font-size:15px;color:var(--muted);border:0;padding:0;background:var(--tile)}
+.sinfo{min-width:0}
+.name{margin:0;font-size:15px;font-weight:700;line-height:1.3}
+.name a::after{content:'';position:absolute;inset:0;z-index:1}
+.dom{display:block;font-size:12.5px;color:var(--muted);direction:ltr;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tag{justify-self:start;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12.5px;font-weight:600;color:var(--muted);background:var(--tile);border-radius:6px;padding:2px 10px}
+.desc{margin:0;font-size:14px;color:var(--muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.acts{display:flex;align-items:center;justify-content:flex-end;gap:2px}
+.fav{position:relative;z-index:2;width:34px;height:34px;border:0;border-radius:8px;background:transparent;color:var(--muted);display:grid;place-items:center}
+.fav:hover{background:var(--tile);color:#D4900A}.fav.on{color:#D4900A}.fav.on .ico{fill:currentColor}
+.go{color:var(--muted);opacity:0;transition:opacity .12s}.row:hover .go{opacity:1;color:var(--accent)}
+mark{background:color-mix(in srgb,#F5C84B 50%,transparent);color:inherit;border-radius:3px}
+.state{text-align:center;padding:64px 20px;color:var(--muted)}.state h3{margin:0 0 6px;color:var(--ink);font-size:19px}.state .btn{margin-top:16px}
+.sk{height:62px;border-bottom:1px solid var(--line);background:linear-gradient(90deg,transparent 25%,var(--hover) 50%,transparent 75%);background-size:200% 100%;animation:sh 1.4s infinite}
 @keyframes sh{to{background-position:-200% 0}}
-
+.scrim{display:none}
 /* modal */
 .ov{position:fixed;inset:0;z-index:100;background:rgba(10,10,10,.55);display:grid;place-items:center;padding:16px;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
 .ov.open{opacity:1;visibility:visible}
@@ -107,49 +105,49 @@ mark{background:color-mix(in srgb,#F5C84B 55%,transparent);color:inherit;border-
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
 @media(max-width:900px){
-  .wrap{grid-template-columns:1fr;gap:14px;padding:14px 16px 60px}
-  aside{position:sticky;top:var(--hh,120px);z-index:40;max-height:none;overflow:visible;margin:0 -16px;padding:8px 16px;background:var(--bg);border-bottom:1px solid var(--line)}
-  .side-title,.sep{display:none}
-  nav{flex-direction:row;overflow-x:auto;gap:8px;scrollbar-width:none}
-  nav::-webkit-scrollbar{display:none}
-  .cat{width:auto;flex-shrink:0;border:1.5px solid var(--line);background:var(--surface);border-radius:100px;padding:7px 16px;white-space:nowrap}
-  .cat.on{border-color:var(--accent)}
-  .cat .n{display:none}
+.app{grid-template-columns:1fr}
+#side{position:fixed;inset:0 auto 0 0;right:0;left:auto;width:280px;z-index:90;transform:translateX(100%);transition:transform .25s;box-shadow:0 0 40px rgba(0,0,0,.25)}
+body.menu #side{transform:none}
+body.menu .scrim{display:block;position:fixed;inset:0;background:rgba(10,12,16,.5);z-index:80}
+#menuBtn{display:inline-flex}
+.top{padding:10px 14px}main{padding:18px 14px 50px}
+.thead{display:none}
+.cols{grid-template-columns:minmax(0,1fr) auto;gap:6px 10px}
+.row .tag{grid-column:1;grid-row:2}.row .desc{grid-column:1/-1;grid-row:3}
+.row .acts{grid-column:2;grid-row:1}
+.go{display:none}
 }
-@media(max-width:640px){
-  .bar{flex-wrap:wrap;padding:12px 16px;gap:10px}
-  .brand{font-size:22px}.brand{order:1;margin-inline-end:auto}
-  .search{order:3;flex-basis:100%}
-  .btn.sug .tx{display:none}.btn.sug{width:48px;padding:0}
-  .head h1{font-size:22px}
-  .desc{-webkit-line-clamp:2}
-}
+@media(max-width:560px){.btn.sug .tx{display:none}.btn.sug{width:40px;padding:0}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
-<header>
-  <div class="bar">
+<div class="app">
+  <aside id="side">
     <div class="brand"><i><svg class="ico" viewBox="0 0 24 24"><path d="M15 7h3a5 5 0 0 1 0 10h-3M9 17H6a5 5 0 0 1 0-10h3M8 12h8"/></svg></i><span>נטלינק</span></div>
-    <div class="search" id="searchBox">
-      <svg class="ico lead" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input id="q" type="text" autocomplete="off" aria-label="חיפוש אתר" placeholder="חיפוש לפי שם, תיאור או קטגוריה">
-      <button class="clear" id="clear" aria-label="ניקוי חיפוש"><svg class="ico" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
-    </div>
-    <button class="btn primary sug" id="sugBtn"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span class="tx">הציעו אתר</span></button>
-    <button class="btn icon theme" id="themeBtn" aria-label="החלפת מצב תצוגה">
-      <svg class="ico sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2L6 6M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
-      <svg class="ico moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
-    </button>
+    <div><p class="side-title">ספרייה</p><nav id="nav" aria-label="קטגוריות"></nav></div>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="pane">
+    <header class="top">
+      <button class="btn icon" id="menuBtn" aria-label="תפריט"><svg class="ico" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      <div class="search" id="searchBox">
+        <svg class="ico lead" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input id="q" type="text" autocomplete="off" aria-label="חיפוש אתר" placeholder="חיפוש אתר, קטגוריה או תיאור  ( / )">
+        <button class="clear" id="clear" aria-label="ניקוי חיפוש"><svg class="ico" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+      </div>
+      <span class="sp"></span>
+      <button class="btn primary sug" id="sugBtn"><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span class="tx">הוספת אתר</span></button>
+      <button class="btn icon theme" id="themeBtn" aria-label="החלפת מצב תצוגה">
+        <svg class="ico sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M4.2 4.2L6 6M18 18l1.8 1.8M2 12h2.5M19.5 12H22M4.2 19.8L6 18M18 6l1.8-1.8"/></svg>
+        <svg class="ico moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg>
+      </button>
+    </header>
+    <main>
+      <div class="head"><h1 id="title">כל האתרים</h1><p id="count" aria-live="polite"></p></div>
+      <div class="table"><div class="cols thead"><span>אתר</span><span>קטגוריה</span><span>תיאור</span><span></span></div><div id="out"><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></div></div>
+    </main>
   </div>
-</header>
-
-<div class="wrap">
-  <aside><p class="side-title">קטגוריות</p><nav id="nav" aria-label="קטגוריות"></nav></aside>
-  <main>
-    <div class="head"><h1 id="title">כל האתרים</h1><p id="count" aria-live="polite"></p></div>
-    <div id="out"><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div><div class="sk"></div></div>
-  </main>
 </div>
 
 <div class="ov" id="ov">
@@ -174,8 +172,7 @@ mark{background:color-mix(in srgb,#F5C84B 55%,transparent);color:inherit;border-
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqW9PU8W3ao33tsiYdwLCKxoENM1zJJsR4LfNrZp1gjLuuuUDH6m13XiVev9LDg8XkpgBwL_ITPkc-/pub?gid=0&single=true&output=csv";
 const SUGGEST_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx6CgLnK2WO983z366MzKHThSxwG6rLkaN_Seim9loWPIFHAn1Norxx924ukMCx2ykqWw/exec";
 const $ = id => document.getElementById(id);
-const PAL = ['#0F6B5C','#B45309','#9F1239','#1D4ED8','#6D28D9','#0E7490','#4D7C0F','#C2410C','#A21CAF','#475569'];
-const color = n => { let h = 0; for(const c of n) h = (h*31 + c.charCodeAt(0)) >>> 0; return PAL[h % PAL.length]; };
+const color = () => 'var(--tile)';
 const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const fold = t => String(t).toLowerCase().replace(/[\u0591-\u05C7]/g,'').trim();
 const hostOf = u => { try{ return new URL(u).hostname.replace(/^www\./,''); }catch(e){ return ''; } };
@@ -232,11 +229,12 @@ function hl(t){ return hlRe ? t.split(hlRe).map((p,i) => i % 2 ? '<mark>' + esc(
 function row(s){
   const h = hostOf(s.url), ini = esc(s.name.trim().charAt(0)), on = favs.has(s.url);
   const src = s.logo || (h ? FAV + h : '');
-  return `<article class="row">
-    ${src ? `<img class="logo" src="${esc(src)}" alt="" loading="lazy" data-ini="${ini}" data-host="${esc(h)}" data-c="${color(s.category)}">` : `<div class="logo fb" style="background:${color(s.category)}">${ini}</div>`}
-    <div class="info"><h3 class="name"><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${hl(s.name)}</a></h3><span class="dom">${esc(h)}</span>${s.desc ? `<p class="desc">${hl(s.desc)}</p>` : ''}</div>
-    <button type="button" class="fav${on ? ' on' : ''}" data-url="${esc(s.url)}" aria-pressed="${on}" aria-label="הוספה או הסרה ממועדפים"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/></svg></button>
-    <svg class="ico go" viewBox="0 0 24 24"><path d="M17 17L7 7M7 17V7h10"/></svg>
+  return `<article class="row cols">
+    <div class="site">${src ? `<img class="logo" src="${esc(src)}" alt="" loading="lazy" data-ini="${ini}" data-host="${esc(h)}" data-c="var(--tile)">` : `<div class="logo fb">${ini}</div>`}
+      <div class="sinfo"><h3 class="name"><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${hl(s.name)}</a></h3><span class="dom">${esc(h)}</span></div></div>
+    <span class="tag">${esc(s.category)}</span>
+    <p class="desc">${hl(s.desc || '')}</p>
+    <div class="acts"><button type="button" class="fav${on ? ' on' : ''}" data-url="${esc(s.url)}" aria-pressed="${on}" aria-label="הוספה או הסרה ממועדפים"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/></svg></button><svg class="ico go" viewBox="0 0 24 24"><path d="M17 17L7 7M7 17V7h10"/></svg></div>
   </article>`;
 }
 function render(){
@@ -249,15 +247,15 @@ function render(){
   if(cat !== 'all' && cat !== 'favs' && !cats.includes(cat)) cat = 'all';
   const item = (k, label, n, icon) => `<button class="cat${cat === k ? ' on' : ''}" data-cat="${esc(k)}"><span>${icon || ''}${esc(label)}</span><span class="n">${n}</span></button>`;
   const star = '<svg class="ico" viewBox="0 0 24 24" style="width:17px;height:17px"><path d="M12 3l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8 6.2 20.9l1.1-6.5L2.6 9.8l6.5-.9z"/></svg>';
-  $('nav').innerHTML = item('all','הכל',found.length) + (favs.size ? item('favs','המועדפים שלי',favCount,star) : '') + '<div class="sep"></div>' + cats.map(c => item(c, c, cnt(c))).join('');
-  const shown = cat === 'all' ? found : cat === 'favs' ? found.filter(s => favs.has(s.url)) : found.filter(s => s.category === cat);
+  $('nav').innerHTML = item('all','כל האתרים',found.length,'<svg class="ico" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>') + (favs.size ? item('favs','המועדפים שלי',favCount,star) : '') + '<div class="sep"></div>' + cats.map(c => item(c, c, cnt(c), '<svg class="ico" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>')).join('');
+  const shown = cat === 'all' ? [...found].sort((a,b) => a.category.localeCompare(b.category,'he')) : cat === 'favs' ? found.filter(s => favs.has(s.url)) : found.filter(s => s.category === cat);
   $('title').textContent = cat === 'all' ? 'כל האתרים' : cat === 'favs' ? 'המועדפים שלי' : cat;
   $('count').textContent = terms.length ? 'נמצאו ' + shown.length + ' מתוך ' + sites.length : shown.length + ' אתרים';
   if(!shown.length){
     $('out').innerHTML = `<div class="state"><h3>${terms.length ? 'לא נמצאו תוצאות' : cat === 'favs' ? 'אין עדיין מועדפים' : 'עדיין לא נוספו אתרים'}</h3><p>${terms.length ? 'נסו מילות חיפוש אחרות, או הציעו את האתר שחסר.' : cat === 'favs' ? 'סמנו אתר בכוכב כדי למצוא אותו כאן.' : 'הוסיפו שורה בגיליון והדף יתעדכן.'}</p>${terms.length ? '<button class="btn primary" id="sug2">הציעו אתר</button>' : ''}</div>`;
     const b = $('sug2'); if(b) b.onclick = openModal; return;
   }
-  const groups = cat === 'all' ? cats.filter(c => shown.some(s => s.category === c)) : [null];
+  const groups = [null];
   $('out').innerHTML = groups.map(c => {
     const list = c ? shown.filter(s => s.category === c) : shown;
     return `<section class="group">${c ? `<h2><span style="width:9px;height:9px;border-radius:50%;background:${color(c)}"></span>${esc(c)}</h2>` : ''}<div class="list">${list.map(row).join('')}</div></section>`;
@@ -267,7 +265,7 @@ function render(){
 /* events */
 $('nav').addEventListener('click', e => {
   const b = e.target.closest('.cat'); if(!b) return;
-  cat = b.dataset.cat; render(); window.scrollTo({top: 0, behavior: 'smooth'});
+  cat = b.dataset.cat; render(); document.body.classList.remove('menu'); window.scrollTo({top: 0});
 });
 $('out').addEventListener('click', e => {
   const b = e.target.closest('.fav'); if(!b) return;
@@ -327,9 +325,9 @@ $('form').addEventListener('submit', async e => {
   finally{ $('send').classList.remove('loading'); $('send').disabled = false; }
 });
 
+$('menuBtn').onclick = () => document.body.classList.add('menu');
+$('scrim').onclick = () => document.body.classList.remove('menu');
 /* boot */
-const hdr = document.querySelector('header');
-new ResizeObserver(() => document.documentElement.style.setProperty('--hh', hdr.offsetHeight + 'px')).observe(hdr);
 try{ const c = localStorage.getItem('nl-csv'); if(c) ingest(c); }catch(e){}
 load();
 </script>
