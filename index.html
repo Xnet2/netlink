@@ -239,7 +239,7 @@ body.menu .scrim{display:block;position:fixed;inset:0;background:rgba(10,12,16,.
 
 <script>
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSqW9PU8W3ao33tsiYdwLCKxoENM1zJJsR4LfNrZp1gjLuuuUDH6m13XiVev9LDg8XkpgBwL_ITPkc-/pub?gid=0&single=true&output=csv";
-const SUGGEST_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbx6CgLnK2WO983z366MzKHThSxwG6rLkaN_Seim9loWPIFHAn1Norxx924ukMCx2ykqWw/exec";
+const SUGGEST_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyRi-ypDroR2KyRcsmwGCCK2ngwliOtZ1gkwAXKEGtlMIf5coOF2HPAgE8ayjLm-HHZTQ/exec";
 const $ = id => document.getElementById(id);
 const color = () => 'var(--tile)';
 const esc = s => String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -420,7 +420,13 @@ document.addEventListener('keydown', e => { if(e.key === 'Escape' && $('pv').cla
 const jwt = t => JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')), c => c.charCodeAt(0))));
 async function api(action, extra){
   if(!tok || (admin && admin.exp * 1000 < Date.now() + 15000)){ signOut(); openLg(); throw new Error('expired'); }
-  const r = await fetch(SUGGEST_WEB_APP_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ action, idToken: tok }, extra || {})) });
+  const q = new URLSearchParams({ action, idToken: tok, _: Date.now() });
+  if(extra){
+    if(extra.row != null) q.set('row', extra.row);
+    if(extra.key != null) q.set('key', extra.key);
+    if(extra.item){ const i = extra.item; q.set('item', JSON.stringify({ url: i.url, name: i.name, desc: i.desc, logo: i.logo, category: i.category })); }
+  }
+  const r = await fetch(SUGGEST_WEB_APP_URL + '?' + q.toString(), { cache: 'no-store' });
   const j = await r.json();
   if(j.status === 'unauthorized'){ lastReason = j.reason || ''; signOut(); throw new Error('unauthorized'); }
   if(j.status !== 'success') throw new Error(j.message || 'error');
