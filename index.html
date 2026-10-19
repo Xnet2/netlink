@@ -188,6 +188,8 @@ body.menu .scrim{display:block;position:fixed;inset:0;background:rgba(10,12,16,.
     <div class="mh"><h2 id="lgt">כניסת מנהל</h2><button class="btn icon" style="height:40px;width:40px;border:0" id="lgx" aria-label="סגירה"><svg class="ico" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
     <p class="lead2">התחברו עם חשבון גוגל כדי לנהל את ההצעות. רק חשבון מורשה יקבל גישה.</p>
     <div class="gwrap" id="gbtn"></div>
+    <div class="msg no" id="lgErr"></div>
+    <p class="lead2 ts" style="margin:12px 0 0">אם כפתור גוגל לא מופיע או נסגר מיד, יש לאשר את הדומיין של האתר ב-Google Cloud Console.</p>
   </div>
 </div>
 
@@ -246,7 +248,7 @@ const hostOf = u => { try{ return new URL(u).hostname.replace(/^www\./,''); }cat
 const safeUrl = u => { try{ const x = new URL(/^https?:\/\//i.test(u) ? u : 'https://' + u); return /^https?:$/.test(x.protocol) ? x.href : ''; }catch(e){ return ''; } };
 const FAV = 'https://www.google.com/s2/favicons?sz=128&domain=';
 
-let admin = null, tok = '', pending = [];
+let admin = null, tok = '', pending = [], lastReason = '';
 const CLIENT_ID = '426523025549-7c50rkn7cun4vmm2r802u0ij6egjehtg.apps.googleusercontent.com';
 const INBOX = '<svg class="ico" viewBox="0 0 24 24"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.1L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.9A2 2 0 0 0 16.7 4H7.3a2 2 0 0 0-1.8 1.1z"/></svg>';
 let sites = [], query = '', cat = 'all', hlRe = null, favs = new Set();
@@ -298,7 +300,7 @@ async function load(){
 function hl(t){ return hlRe ? t.split(hlRe).map((p,i) => i % 2 ? '<mark>' + esc(p) + '</mark>' : esc(p)).join('') : esc(t); }
 function row(s){
   const h = hostOf(s.url), ini = esc(s.name.trim().charAt(0)), on = favs.has(s.url);
-  const src = s.logo || (h ? FAV + h : '');
+  const src = (s.logo || (h ? FAV + h : '')).replace(/^http:\/\//i, 'https://');
   return `<article class="row cols">
     <div class="site">${src ? `<img class="logo" src="${esc(src)}" alt="" loading="lazy" data-ini="${ini}" data-host="${esc(h)}" data-c="var(--tile)">` : `<div class="logo fb">${ini}</div>`}
       <div class="sinfo"><h3 class="name"><a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${hl(s.name)}</a></h3><span class="dom">${esc(h)}</span></div></div>
@@ -420,7 +422,7 @@ async function api(action, extra){
   if(!tok || (admin && admin.exp * 1000 < Date.now() + 15000)){ signOut(); openLg(); throw new Error('expired'); }
   const r = await fetch(SUGGEST_WEB_APP_URL, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ action, idToken: tok }, extra || {})) });
   const j = await r.json();
-  if(j.status === 'unauthorized'){ signOut(); throw new Error('unauthorized'); }
+  if(j.status === 'unauthorized'){ lastReason = j.reason || ''; signOut(); throw new Error('unauthorized'); }
   if(j.status !== 'success') throw new Error(j.message || 'error');
   return j;
 }
@@ -441,13 +443,18 @@ async function onCred(resp){
   try{
     await api('whoami'); try{ sessionStorage.setItem('nl-tok', tok); }catch(e){}
     closeLg(); renderAcct(); await loadPending(); cat = 'pending'; render(); toast('מחוברים כמנהל');
-  }catch(e){ toast(e.message === 'unauthorized' ? 'החשבון הזה אינו מורשה לניהול' : 'שגיאת תקשורת, נסו שוב'); signOut(); }
+  }catch(e){
+    const m = e.message === 'unauthorized' ? 'החשבון הזה אינו מורשה לניהול' + (lastReason ? ' (' + lastReason + ')' : '')
+      : e instanceof TypeError ? 'לא ניתן להגיע לשרת. ודאו שהסקריפט נפרס מחדש ב-New version'
+      : 'שגיאת שרת: ' + e.message;
+    signOut(); const el = $('lgErr'); el.textContent = m; el.style.display = 'block'; toast(m);
+  }
 }
 let gInit = false;
 function openLg(){
   if(!window.google || !google.accounts){ toast('שירות ההתחברות של גוגל לא נטען'); return; }
   if(!gInit){ google.accounts.id.initialize({ client_id: CLIENT_ID, callback: onCred, auto_select: false }); gInit = true; }
-  $('gbtn').innerHTML = ''; google.accounts.id.renderButton($('gbtn'), { theme: dark ? 'filled_black' : 'outline', size: 'large', text: 'signin_with', locale: 'he', width: 280 });
+  $('gbtn').innerHTML = ''; $('lgErr').style.display = 'none'; google.accounts.id.renderButton($('gbtn'), { theme: dark ? 'filled_black' : 'outline', size: 'large', text: 'signin_with', locale: 'he', width: 280 });
   $('lg').classList.add('open');
 }
 function closeLg(){ $('lg').classList.remove('open'); }
@@ -455,7 +462,7 @@ $('lgx').onclick = closeLg; $('lg').addEventListener('click', e => { if(e.target
 
 function prow(s){
   const h = hostOf(s.url), ini = esc(s.name.trim().charAt(0) || '?');
-  const logo = s.logo ? `<img class="logo" src="${esc(s.logo)}" alt="" loading="lazy" data-ini="${ini}" data-host="" data-c="var(--tile)">` : `<div class="logo fb">${ini}</div>`;
+  const logo = s.logo ? `<img class="logo" src="${esc(s.logo.replace(/^http:\/\//i, 'https://'))}" alt="" loading="lazy" data-ini="${ini}" data-host="" data-c="var(--tile)">` : `<div class="logo fb">${ini}</div>`;
   const ib = (c, l, svg) => `<button type="button" class="prev ${c}" data-row="${s.row}" aria-label="${l}" title="${l}">${svg}</button>`;
   return `<article class="row cols">
     <div class="site">${logo}<div class="sinfo"><h3 class="name">${hl(s.name)}</h3><span class="dom">${esc(h || s.url)}</span></div></div>
